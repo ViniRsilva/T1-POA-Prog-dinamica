@@ -24,10 +24,6 @@ Para rodar o backend localmente, siga os passos abaixo:
 
 4.  **Acesse os serviços**:
     *   **Swagger UI** (documentação da API): `http://localhost:8080/swagger-ui.html`
-    *   **H2 Console** (banco de dados): `http://localhost:8080/h2-console`
-        *   **JDBC URL**: `jdbc:h2:mem:testdb`
-        *   **User Name**: `sa`
-        *   **Password**: `admin`
 
 ## Como Contribuir
 

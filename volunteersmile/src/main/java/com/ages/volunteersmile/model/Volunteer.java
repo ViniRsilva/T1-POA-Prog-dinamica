@@ -1,19 +1,20 @@
 package com.ages.volunteersmile.model;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 @Entity
 @Data
-public class Volunteer {
+@EqualsAndHashCode(callSuper = true)
+@DiscriminatorValue("VOLUNTEER")
+public class Volunteer extends User {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    private String name;
-    private String email;
+    @Column(name = "room_access_level")
+    private Integer roomAccessLevel;
 
+    @Column(name = "description_voluntary", columnDefinition = "TEXT")
+    private String descriptionVoluntary;
 }
