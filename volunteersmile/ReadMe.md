@@ -20,6 +20,27 @@ Abra um terminal e clone o projeto para a sua máquina:
 git clone https://tools.ages.pucrs.br/volunteer-smile/volunteersmile-backend.git
 cd volunteersmile-backend
 ```
+## 📜 Padrões de Desenvolvimento
+
+Para manter a organização e a clareza do nosso repositório, seguimos os seguintes padrões para a criação de branches e a escrita de mensagens de commit.
+
+### Padrão de Branches
+
+Toda nova branch deve seguir o formato abaixo, utilizando o ID da task (do Jira, Trello, etc.) como referência.
+
+**Formato:** `tipo/<id_da_task>-breve-descricao`
+
+**Tipos de Branch:**
+* **feat:** Para o desenvolvimento de novas funcionalidades (`features`).
+* **fix:** Para a correção de bugs.
+* **chore:** Para tarefas de manutenção que não alteram o código de produção (ex: atualizar dependências, configurar CI/CD).
+* **docs:** Para alterações na documentação.
+* **refactor:** Para refatorações de código que não alteram o comportamento externo.
+
+**Exemplo:**
+```bash
+git checkout -b feat/VS-123-implementar-login-de-usuario
+```
 
 ### 3. A Configurar o Ambiente Local
 
