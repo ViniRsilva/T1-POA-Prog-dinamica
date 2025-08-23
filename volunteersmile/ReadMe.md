@@ -39,7 +39,28 @@ Toda nova branch deve seguir o formato abaixo, utilizando o ID da task (do Jira,
 
 **Exemplo:**
 ```bash
-git checkout -b feat/VS-123-implementar-login-de-usuario
+git checkout -b feat/86b6cx1xp-create-postgre-db
+```
+
+### Padrão de Commits
+
+Utilizamos o padrão **Conventional Commits** para as nossas mensagens de commit. Isso nos ajuda a ter um histórico claro e a automatizar a geração de changelogs no futuro.
+
+**Formato:** `tipo: descrição curta em letra minúscula`
+
+**Tipos de Commit:**
+* `feat`: Adiciona uma nova funcionalidade.
+* `fix`: Corrige um bug.
+* `chore`: Atualizações de tarefas de build, pacotes, etc.
+* `docs`: Alterações na documentação.
+* `style`: Alterações de formatação, espaços em branco, etc. (sem impacto no código).
+* `refactor`: Refatoração de código.
+* `test`: Adição ou modificação de testes.
+* `ci`: Mudanças nos arquivos de CI/CD.
+
+**Exemplo:**
+```bash
+git commit -m "feat: add user login endpoint"
 ```
 
 ### 3. A Configurar o Ambiente Local
