@@ -1,0 +1,69 @@
+# VolunteerSmile API
+
+## 🚀 Começando
+
+Siga estas instruções para configurar e rodar o projeto no seu ambiente de desenvolvimento local.
+
+### 1. Pré-requisitos
+
+Antes de começar, garanta que tem os seguintes softwares instalados:
+* **Git:** Para clonar o repositório.
+* **JDK 21 (ou superior):** O Java Development Kit para rodar a aplicação Spring.
+* **Docker Desktop:** Para rodar o banco de dados PostgreSQL. Certifique-se de que está em execução.
+* **Maven:** Para gerir as dependências e o build do projeto.
+* **IDE de sua preferência:** IntelliJ IDEA ou VS Code com o "Extension Pack for Java".
+
+### 2. Clonar o Repositório
+
+Abra um terminal e clone o projeto para a sua máquina:
+```bash
+git clone https://tools.ages.pucrs.br/volunteer-smile/volunteersmile-backend.git
+cd volunteersmile-backend
+```
+
+### 3. A Configurar o Ambiente Local
+
+O projeto utiliza dois arquivos locais para armazenar credenciais e configurações sensíveis. Estes arquivos não são versionados no Git, por isso precisa de os criar manualmente.
+
+**A. Crie o arquivo `.env`**
+
+Este arquivo configura o contentor do banco de dados.
+
+1.  Na raiz do projeto (`volunteersmile-backend`), crie um arquivo chamado `.env`.
+2.  Adicione o seguinte conteúdo a ele:
+    ```
+    # Credenciais para o contentor do PostgreSQL
+    POSTGRES_USER=postgres
+    POSTGRES_PASSWORD=admin
+    POSTGRES_DB=volunteersmile_db
+    ```
+
+**B. Crie o arquivo `application-local.properties`**
+
+Este arquivo configura a sua aplicação Spring para se conectar ao banco de dados.
+
+1.  Navegue até à pasta `src/main/resources`.
+2.  Crie um novo arquivo chamado `application-local.properties`.
+3.  Adicione o seguinte conteúdo, garantindo que as credenciais sejam **idênticas** às do arquivo `.env`:
+    ```properties
+    # Credenciais para o Banco de Dados a rodar no Docker
+    spring.datasource.url=jdbc:postgresql://localhost:5432/volunteersmile_db
+    spring.datasource.username=postgres
+    spring.datasource.password=admin
+    ```
+
+### 4. A Subir o Banco de Dados
+
+Com o Docker Desktop em execução, abra um terminal na raiz do projeto e execute o comando:
+
+```bash
+docker-compose up -d
+```
+Este comando irá descarregar a imagem do PostgreSQL (apenas na primeira vez) e iniciar o contentor do banco de dados em segundo plano. Para verificar se o contentor está a rodar, use docker-compose ps.
+
+### 5. A Construir e Rodar a Aplicação
+Na raiz do projeto, execute o seguinte comando Maven para construir e iniciar a aplicação:
+
+```bash
+mvn spring-boot:run
+```

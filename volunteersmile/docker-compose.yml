@@ -1,0 +1,34 @@
+# Versão do Docker Compose
+version: '3.8'
+
+# Definição dos serviços (nossos containers)
+services:
+  # Nome do nosso serviço de banco de dados
+  postgres-db:
+    # Imagem oficial do PostgreSQL que será usada
+    image: postgres:17
+
+    # Nome do container que será criado
+    container_name: volunteersmile_postgres
+
+    # Carrega as variáveis de ambiente a partir do arquivo .env
+    env_file:
+      - .env
+
+    # Mapeamento de portas
+    # Expõe a porta 5432 do container para a porta 5432 da sua máquina
+    ports:
+      - "5432:5432"
+
+    # Volumes para persistência de dados
+    # Garante que os dados do banco não sejam perdidos quando o container parar
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+    # Política de reinicialização
+    # Sempre reinicia o container se ele parar, a menos que você o pare manualmente
+    restart: unless-stopped
+
+# Definição dos volumes nomeados
+volumes:
+  postgres_data:
