@@ -1,4 +1,4 @@
-package com.ages.volunteersmile.model;
+package com.ages.volunteersmile.domain.global.model;
 
 import jakarta.persistence.*;
 import lombok.Data;
