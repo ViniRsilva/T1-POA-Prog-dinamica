@@ -2,6 +2,7 @@ package com.ages.volunteersmile.model;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import java.util.UUID;
 
 @Entity
 @Data
@@ -9,8 +10,8 @@ import lombok.Data;
 public class UserVisit {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private UUID id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_user", nullable = false)
