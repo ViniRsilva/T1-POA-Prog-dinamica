@@ -76,7 +76,7 @@ Este arquivo configura o contentor do banco de dados.
     ```
     # Credenciais para o contentor do PostgreSQL
     POSTGRES_USER=postgres
-    POSTGRES_PASSWORD=admin
+    POSTGRES_PASSWORD=postgres
     POSTGRES_DB=volunteersmile_db
     ```
 
@@ -91,7 +91,7 @@ Este arquivo configura a sua aplicação Spring para se conectar ao banco de dad
     # Credenciais para o Banco de Dados a rodar no Docker
     spring.datasource.url=jdbc:postgresql://localhost:5432/volunteersmile_db
     spring.datasource.username=postgres
-    spring.datasource.password=admin
+    spring.datasource.password=postgres
     ```
 
 ### 4. A Subir o Banco de Dados
