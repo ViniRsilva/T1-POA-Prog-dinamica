@@ -28,19 +28,12 @@ public abstract class User {
     @Column(name = "phone_number", length = 30)
     private String phoneNumber;
 
-    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private UserStatus status = UserStatus.PENDING;
+    private String status;
 
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt = LocalDateTime.now();
 
     @Column(name = "last_login")
     private LocalDateTime lastLogin;
-
-    public enum UserStatus {
-        ACTIVE,
-        INACTIVE,
-        PENDING
-    }
 }
