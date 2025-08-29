@@ -34,6 +34,9 @@ public abstract class User {
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt = LocalDateTime.now();
 
+    @Column(name = "deleted_at")
+    private LocalDateTime deletedAt;
+
     @Column(name = "last_login")
     private LocalDateTime lastLogin;
 }

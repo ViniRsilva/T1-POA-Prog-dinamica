@@ -3,7 +3,9 @@ package com.ages.volunteersmile.application.mapper;
 import com.ages.volunteersmile.application.dto.UserDTO;
 import com.ages.volunteersmile.application.dto.UserStatusDTO;
 import com.ages.volunteersmile.domain.global.model.User;
+import org.springframework.stereotype.Component;
 
+@Component
 public class UserDataMapper {
 
     public UserDataMapper(){}
