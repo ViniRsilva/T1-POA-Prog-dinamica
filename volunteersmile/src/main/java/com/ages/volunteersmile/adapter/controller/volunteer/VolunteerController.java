@@ -1,28 +1,39 @@
 package com.ages.volunteersmile.adapter.controller.volunteer;
 
-import com.ages.volunteersmile.application.dto.CreateVolunteerDTO;
-import com.ages.volunteersmile.application.dto.UpdatePasswordDTO;
-import com.ages.volunteersmile.application.dto.VolunteerDTO;
-import com.ages.volunteersmile.application.service.UserApplicationService;
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import java.util.List;
+import java.util.UUID;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
-import java.util.UUID;
+import com.ages.volunteersmile.application.dto.CreateVolunteerDTO;
+import com.ages.volunteersmile.application.dto.UpdatePasswordDTO;
+import com.ages.volunteersmile.application.dto.UpdateVolunteerDTO;
+import com.ages.volunteersmile.application.dto.VolunteerDTO;
+import com.ages.volunteersmile.application.service.VolunteerApplicationService;
+
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/volunteers")
 public class VolunteerController {
 
-    private final UserApplicationService volunteerService;
+    private final VolunteerApplicationService volunteerService;
 
     @Autowired
-    public VolunteerController(UserApplicationService volunteerService) {
+    public VolunteerController(VolunteerApplicationService volunteerService) {
         this.volunteerService = volunteerService;
     }
 
@@ -34,7 +45,7 @@ public class VolunteerController {
             @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
     })
     @PostMapping
-    public ResponseEntity<VolunteerDTO> createVolunteer(@RequestBody CreateVolunteerDTO body) {
+    public ResponseEntity<VolunteerDTO> createVolunteer(@Valid @RequestBody CreateVolunteerDTO body) {
         return ResponseEntity.status(HttpStatus.CREATED).body(volunteerService.createVolunteer(body));
     }
 
@@ -75,7 +86,7 @@ public class VolunteerController {
             @ApiResponse(responseCode = "409", description = "Email já existe")
     })
     @PutMapping("/{id}")
-    public ResponseEntity<VolunteerDTO> updateVolunteer(@PathVariable UUID id, @RequestBody VolunteerDTO body) {
+    public ResponseEntity<VolunteerDTO> updateVolunteer(@PathVariable UUID id, @Valid @RequestBody UpdateVolunteerDTO body) {
         return ResponseEntity.ok(volunteerService.updateVolunteer(id, body));
     }
 
@@ -86,7 +97,7 @@ public class VolunteerController {
             @ApiResponse(responseCode = "404", description = "Voluntário não encontrado")
     })
     @PutMapping("/{id}/password")
-    public ResponseEntity<Void> updatePassword(@PathVariable UUID id, @RequestBody UpdatePasswordDTO body) {
+    public ResponseEntity<Void> updatePassword(@PathVariable UUID id, @Valid @RequestBody UpdatePasswordDTO body) {
         volunteerService.updatePassword(id, body);
         return ResponseEntity.noContent().build();
     }

@@ -1,9 +1,9 @@
 package com.ages.volunteersmile.application.mapper;
 
-import com.ages.volunteersmile.application.dto.UserDTO;
-import com.ages.volunteersmile.application.dto.UserStatusDTO;
-import com.ages.volunteersmile.domain.global.model.User;
 import org.springframework.stereotype.Component;
+
+import com.ages.volunteersmile.application.dto.UserDTO;
+import com.ages.volunteersmile.domain.global.model.User;
 
 @Component
 public class UserDataMapper {
@@ -11,23 +11,20 @@ public class UserDataMapper {
     public UserDataMapper(){}
 
     public UserDTO mapFrom(User user){
-        var userDTO = new UserDTO();
-        userDTO.setId(user.getId());
-        userDTO.setName(user.getName());
-        userDTO.setEmail(user.getEmail());
-        userDTO.setPhoneNumber(user.getPhoneNumber());
-        userDTO.setStatus(UserStatusDTO.valueOf(user.getStatus()));
-        userDTO.setCreatedAt(user.getCreatedAt());
-        return userDTO;
+        UserDTO dto = new UserDTO();
+        dto.setId(user.getId());
+        dto.setName(user.getName());
+        dto.setEmail(user.getEmail());
+        dto.setRole(user.getAppRole());
+        if (user.getStatus() != null) dto.setStatus(user.getStatus());
+        return dto;
     }
 
-    public User mapTo(UserDTO userDTO, User user){
-        user.setName(userDTO.getName());
-        user.setEmail(userDTO.getEmail());
-        user.setPhoneNumber(userDTO.getPhoneNumber());
-        if(userDTO.getStatus() != null){
-            user.setStatus(userDTO.getStatus().name());
-        }
+    public User mapTo(UserDTO dto, User user){
+        if (dto.getName() != null) user.setName(dto.getName());
+        if (dto.getEmail() != null) user.setEmail(dto.getEmail());
+        if (dto.getStatus() != null) user.setStatus(dto.getStatus());
+        if (dto.getRole() != null) user.setAppRole(dto.getRole());
         return user;
     }
 }
