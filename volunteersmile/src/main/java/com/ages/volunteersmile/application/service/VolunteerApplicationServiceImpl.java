@@ -59,21 +59,20 @@ public class VolunteerApplicationServiceImpl implements VolunteerApplicationServ
 
     @Override
     public VolunteerDTO findById(UUID id) {
-    Volunteer volunteer = repository.findActiveById(id)
+    Volunteer volunteer = repository.findById(id)
                 .orElseThrow(() -> exceptions.notFound("Voluntário não encontrado"));
         return volunteerDataMapper.mapFrom(volunteer);
     }
 
     @Override
     public List<VolunteerDTO> findAll() {
-        List<Volunteer> volunteers = repository.findAllActive();
-        return volunteerDataMapper.mapFrom(volunteers);
+        return volunteerDataMapper.mapFrom(repository.findAll());
     }
 
     @Override
     @Transactional
     public VolunteerDTO updateVolunteer(UUID id, UpdateVolunteerDTO updateRequest) {
-    Volunteer volunteer = repository.findActiveById(id)
+    Volunteer volunteer = repository.findById(id)
                 .orElseThrow(() -> exceptions.notFound("Voluntário não encontrado"));
 
         if (updateRequest.getEmail() != null && !updateRequest.getEmail().equals(volunteer.getEmail())) {
@@ -92,17 +91,17 @@ public class VolunteerApplicationServiceImpl implements VolunteerApplicationServ
 
     @Override
     @Transactional
-    public void deleteVolunteer(UUID id) {
-    Volunteer volunteer = repository.findActiveById(id)
+    public void deleteVolunteerById(UUID id) {
+    Volunteer volunteer = repository.findById(id)
                 .orElseThrow(() -> exceptions.notFound("Voluntário não encontrado"));
         volunteer.setDeletedAt(LocalDateTime.now());
-        repository.save(volunteer);
+        repository.delete(volunteer);
     }
 
     @Override
     @Transactional
     public void updatePassword(UUID volunteerId, UpdatePasswordDTO passwordUpdateRequest) {
-    Volunteer volunteer = repository.findActiveById(volunteerId)
+    Volunteer volunteer = repository.findById(volunteerId)
                 .orElseThrow(() -> exceptions.notFound("Voluntário não encontrado com este ID"));
 
         if (!passwordUpdateRequest.getNewPassword().equals(passwordUpdateRequest.getConfirmNewPassword())) {

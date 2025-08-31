@@ -14,6 +14,6 @@ public interface VolunteerApplicationService {
     VolunteerDTO findById(UUID id);
     List<VolunteerDTO> findAll();
     VolunteerDTO updateVolunteer(UUID id, UpdateVolunteerDTO dto);
-    void deleteVolunteer(UUID id);
+    void deleteVolunteerById(UUID id);
     void updatePassword(UUID volunteerId, UpdatePasswordDTO dto);
 }

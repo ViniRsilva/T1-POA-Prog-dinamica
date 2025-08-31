@@ -109,7 +109,7 @@ public class VolunteerController {
     })
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteVolunteer(@PathVariable UUID id) {
-        volunteerService.deleteVolunteer(id);
+        volunteerService.deleteVolunteerById(id);
         return ResponseEntity.noContent().build();
     }
 }
