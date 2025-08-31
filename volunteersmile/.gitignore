@@ -60,3 +60,4 @@ Thumbs.db
 # Docker
 postgres_data/
 .env
+.env
