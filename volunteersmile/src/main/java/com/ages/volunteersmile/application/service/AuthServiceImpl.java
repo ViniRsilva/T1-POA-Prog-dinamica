@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.ages.volunteersmile.application.dto.LoginRequestDTO;
 import com.ages.volunteersmile.application.dto.LoginResponseDTO;
+import com.ages.volunteersmile.application.dto.VolunteerDTO;
 import com.ages.volunteersmile.application.mapper.VolunteerDataMapper;
 import com.ages.volunteersmile.domain.volunteer.model.Volunteer;
 import com.ages.volunteersmile.repository.VolunteerRepository;
@@ -33,12 +34,13 @@ public class AuthServiceImpl implements AuthService {
         if (volunteerOpt.isEmpty() || !passwordEncoder.matches(request.getPassword(), volunteerOpt.get().getPassword())) {
             throw new RuntimeException("Usuário ou senha inválidos");
         }
-        Volunteer volunteer = volunteerOpt.get();
-        String token = jwtUtil.generateToken(volunteer);
+        
+        VolunteerDTO volunteerDTO = volunteerDataMapper.mapFrom(volunteerOpt.get());
+        String token = jwtUtil.generateToken(volunteerDTO);
         return new LoginResponseDTO(
             token,
-            volunteerDataMapper.mapFrom(volunteer).getName(),
-            volunteerDataMapper.mapFrom(volunteer).getEmail()
+            volunteerDTO.getName(),
+            volunteerDTO.getEmail()
         );
     }
 }
