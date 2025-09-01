@@ -1,10 +1,11 @@
-package com.ages.volunteersmile.application.service;
-
+package com.ages.volunteersmile.utils;
 
 import java.security.Key;
 import java.util.Date;
 
 import org.springframework.stereotype.Component;
+
+import com.ages.volunteersmile.domain.volunteer.model.Volunteer;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -17,10 +18,9 @@ public class JwtUtil {
     private final long EXPIRATION = 1000 * 60 * 60 * 24;
     private final Key key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
 
-
-    public String generateToken(String email) {
+    public String generateToken(Volunteer volunteer) {
         return Jwts.builder()
-                .setSubject(email)
+                .setSubject(volunteer.getEmail())
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION))
                 .signWith(key, SignatureAlgorithm.HS256)

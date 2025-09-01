@@ -1,5 +1,4 @@
-package com.ages.volunteersmile.adapter.auth;
-
+package com.ages.volunteersmile.adapter.controller.auth;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -32,8 +31,7 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<LoginResponseDTO> login(@RequestBody LoginRequestDTO request) {
         try {
-            LoginResponseDTO response = authService.login(request);
-            return ResponseEntity.ok(response);
+            return ResponseEntity.ok(authService.login(request));
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
         } catch (Exception e) {
