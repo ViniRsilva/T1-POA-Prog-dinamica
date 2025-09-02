@@ -8,7 +8,7 @@ import lombok.Setter;
 @Setter
 public class FeedbackDTO {
     private String id;
-    private String photoUrl;
+//    private String photoUrl;
     @JsonProperty("user_name")
     private String userName;
     private String date;

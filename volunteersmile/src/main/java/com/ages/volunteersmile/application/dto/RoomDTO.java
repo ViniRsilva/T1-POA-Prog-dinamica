@@ -1,5 +1,6 @@
 package com.ages.volunteersmile.application.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -10,7 +11,9 @@ import java.util.List;
 public class RoomDTO {
     private Integer floor;
     private Integer number;
+    @JsonProperty("difficulty_level")
     private Integer difficultyLevel;
+    @JsonProperty("max_occupancy")
     private Integer maxOccupancy;
     private String sector;
     private String status;

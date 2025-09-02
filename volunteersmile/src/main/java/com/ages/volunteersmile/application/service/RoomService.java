@@ -8,7 +8,7 @@ import java.util.UUID;
 
 public interface RoomService {
 
-    RoomDTO addRoom(CreateRoomDTO request);
+    RoomDTO AaddRoom(CreateRoomDTO request);
 
     List<RoomDTO> listAll();
 

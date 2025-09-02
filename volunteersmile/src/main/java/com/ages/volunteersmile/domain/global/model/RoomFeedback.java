@@ -15,7 +15,7 @@ public class RoomFeedback {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    private String photoUrl;
+//    private String photoUrl;
 
     @Column(name = "user_name", nullable = false)
     private String userName;

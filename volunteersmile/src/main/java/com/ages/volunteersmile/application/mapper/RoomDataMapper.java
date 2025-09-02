@@ -53,7 +53,7 @@ public final class RoomDataMapper {
         return feedbacks.stream().map(f -> {
             FeedbackDTO fr = new FeedbackDTO();
             fr.setId(f.getId() != null ? f.getId().toString() : null);
-            fr.setPhotoUrl(f.getPhotoUrl());
+//            fr.setPhotoUrl(f.getPhotoUrl());
             fr.setUserName(f.getUserName());
             fr.setDate(f.getDate() != null ? f.getDate().format(BR_DATE) : null);
             fr.setFeedback(f.getFeedback());
