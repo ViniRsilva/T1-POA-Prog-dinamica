@@ -1,7 +1,12 @@
 package com.ages.volunteersmile.domain.global.model;
 
+import com.ages.volunteersmile.application.Enum.RoomPriority;
+import com.ages.volunteersmile.application.Enum.RoomStatus;
 import jakarta.persistence.*;
 import lombok.Data;
+
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -22,14 +27,25 @@ public class Room {
     @Column(name = "difficulty_level", nullable = false)
     private Integer difficultyLevel;
 
+    @Column(nullable = false)
+    private String sector;
+
+    @Column(name = "max_occupancy", nullable = false)
+    private Integer maxOccupancy;
+
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private Priority priority;
+    private RoomStatus status;
 
-    public enum Priority {
-        LOW,
-        MEDIUM,
-        HIGH,
-        URGENT
-    }
+    @Column(columnDefinition = "text")
+    private String description;
+
+    @OneToMany(mappedBy = "room", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private List<RoomFeedback> feedbacks = new ArrayList<>();
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private RoomPriority priority;
+
+
 }
