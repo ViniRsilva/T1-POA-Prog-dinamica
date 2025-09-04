@@ -8,9 +8,13 @@ import java.util.UUID;
 
 public interface RoomService {
 
-    RoomDTO AaddRoom(CreateRoomDTO request);
+    RoomDTO addRoom(CreateRoomDTO request);
 
     List<RoomDTO> listAll();
 
     RoomDTO getById(UUID id);
+
+    RoomDTO updateRoom(UUID id, com.ages.volunteersmile.application.dto.UpdateRoomDTO request);
+
+    void deleteRoom(UUID id);
 }

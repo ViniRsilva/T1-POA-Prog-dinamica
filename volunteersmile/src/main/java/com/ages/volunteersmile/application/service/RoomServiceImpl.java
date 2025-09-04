@@ -3,6 +3,7 @@ package com.ages.volunteersmile.application.service;
 import com.ages.volunteersmile.application.dto.CreateRoomDTO;
 import com.ages.volunteersmile.application.dto.RoomDTO;
 import com.ages.volunteersmile.application.mapper.RoomDataMapper;
+import com.ages.volunteersmile.application.dto.UpdateRoomDTO;
 import com.ages.volunteersmile.domain.global.model.Room;
 import com.ages.volunteersmile.repository.RoomRepository;
 import jakarta.transaction.Transactional;
@@ -44,5 +45,29 @@ public class RoomServiceImpl implements RoomService {
     public RoomDTO getById(UUID id) {
         Room room = roomRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
         return RoomDataMapper.toResponse(room);
+    }
+    @Transactional
+    @Override
+    public RoomDTO updateRoom(UUID id, UpdateRoomDTO request) {
+        Room room = roomRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        room.setFloor(request.getFloor());
+        room.setNumber(request.getNumber());
+        room.setDifficultyLevel(request.getDifficultyLevel());
+        room.setMaxOccupancy(request.getMaxOccupancy());
+        room.setSector(request.getSector());
+        room.setStatus(request.getStatus());
+        room.setPriority(request.getPriority());
+        room.setDescription(request.getDescription());
+        Room saved = roomRepository.save(room);
+        return RoomDataMapper.toResponse(saved);
+    }
+
+    @Transactional
+    @Override
+    public void deleteRoom(UUID id) {
+        Room room = roomRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        roomRepository.delete(room);
     }
 }

@@ -9,6 +9,7 @@ import java.util.List;
 @Getter
 @Setter
 public class RoomDTO {
+    private String id;
     private Integer floor;
     private Integer number;
     @JsonProperty("difficulty_level")

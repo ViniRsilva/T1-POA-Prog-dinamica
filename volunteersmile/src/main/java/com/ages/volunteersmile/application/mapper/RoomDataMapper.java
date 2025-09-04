@@ -32,6 +32,7 @@ public final class RoomDataMapper {
 
     public static RoomDTO toResponse(Room room) {
         RoomDTO dto = new RoomDTO();
+        dto.setId(room.getId() != null ? room.getId().toString() : null);
         dto.setFloor(room.getFloor());
         dto.setNumber(room.getNumber());
         dto.setDifficultyLevel(room.getDifficultyLevel());

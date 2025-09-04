@@ -2,6 +2,7 @@ package com.ages.volunteersmile.adapter.controller.room;
 
 import com.ages.volunteersmile.application.dto.CreateRoomDTO;
 import com.ages.volunteersmile.application.dto.RoomDTO;
+import com.ages.volunteersmile.application.dto.UpdateRoomDTO;
 import com.ages.volunteersmile.application.service.RoomService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -49,5 +50,27 @@ public class RoomController {
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<RoomDTO> getById(@PathVariable("id") UUID id) {
         return ResponseEntity.ok(service.getById(id));
+    }
+    @Operation(summary = "Atualiza um quarto existente")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Quarto atualizado"),
+            @ApiResponse(responseCode = "400", description = "Erro de validação"),
+            @ApiResponse(responseCode = "404", description = "Quarto não encontrado")
+    })
+    @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<RoomDTO> update(@PathVariable("id") UUID id, @Valid @RequestBody UpdateRoomDTO request) {
+        RoomDTO updated = service.updateRoom(id, request);
+        return ResponseEntity.ok(updated);
+    }
+
+    @Operation(summary = "Deleta um quarto existente")
+    @ApiResponses({
+            @ApiResponse(responseCode = "204", description = "Quarto deletado"),
+            @ApiResponse(responseCode = "404", description = "Quarto não encontrado")
+    })
+    @DeleteMapping(value = "/{id}")
+    public ResponseEntity<Void> delete(@PathVariable("id") UUID id) {
+        service.deleteRoom(id);
+        return ResponseEntity.noContent().build();
     }
 }
