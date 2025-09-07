@@ -1,17 +1,39 @@
 -- data.sql
 -- Popula dados iniciais para ambiente local (PostgreSQL)
--- Observação: spring.jpa.hibernate.ddl-auto=create recriará o schema a cada start, então estes inserts serão aplicados após o Hibernate gerar as tabelas.
--- Caso passe a usar validate/update em produção, considere separar schema.sql (DDL) de data.sql (DML).
+-- Este arquivo é executado no profile "local". O schema é gerenciado pelo Flyway (V1__create_tables.sql).
+-- Em application-local.properties: spring.sql.init.mode=always e spring.jpa.defer-datasource-initialization=true
+
+-- Reset dos dados dummy (idempotente): remove os registros pelos IDs antes de inserir novamente
+-- Ordem importa por causa de FKs: users_visits -> visits -> users -> rooms
+DELETE FROM users_visits WHERE id IN (
+    '30000000-0000-0000-0000-000000000001',
+    '30000000-0000-0000-0000-000000000002',
+    '30000000-0000-0000-0000-000000000003'
+);
+
+DELETE FROM visits WHERE id IN (
+    '20000000-0000-0000-0000-000000000001',
+    '20000000-0000-0000-0000-000000000002',
+    '20000000-0000-0000-0000-000000000003'
+);
+
+DELETE FROM users WHERE id IN (
+    '00000000-0000-0000-0000-000000000001', -- admin
+    '00000000-0000-0000-0000-000000000101', -- joao
+    '00000000-0000-0000-0000-000000000102'  -- maria
+);
+
+DELETE FROM rooms WHERE id IN (
+    '10000000-0000-0000-0000-000000000001',
+    '10000000-0000-0000-0000-000000000002',
+    '10000000-0000-0000-0000-000000000003'
+);
 
 -- Limpando tabela (útil se estiver usando ddl-auto=update). Comentado por padrão.
 -- TRUNCATE TABLE users CASCADE;
 -- TRUNCATE TABLE rooms CASCADE;
 
--- Observação nova: coluna app_role adicionada à entidade User para evitar reflexão do discriminador.
--- Para bases já existentes, executar (exemplo):
--- ALTER TABLE users ADD COLUMN app_role VARCHAR(30);
--- UPDATE users SET app_role = role WHERE app_role IS NULL;
--- ALTER TABLE users ALTER COLUMN app_role SET NOT NULL;
+-- Observação: a tabela users usa Single Table Inheritance com discriminador "role" e campo obrigatório "app_role" (enum UserRole).
 
 -- Inserindo um ADMIN (inclui app_role)
 INSERT INTO users (id, role, app_role, email, password, name, phone_number, status, created_at, deleted_at, last_login, room_access_level, description_voluntary)
@@ -59,7 +81,7 @@ VALUES (
     'Maria Oliveira',
     '+55 11 97777-2222',
     'ACTIVE',
-    NOW(),
+        NOW(),
     NULL,
     NULL,
     3,
@@ -67,18 +89,19 @@ VALUES (
 );
 
 -- Inserindo salas (rooms)
-INSERT INTO rooms (id, floor, number, difficulty_level, priority)
+-- Atenção: pela migration V1, rooms possui colunas NOT NULL extras: sector, max_occupancy, status, description, priority
+INSERT INTO rooms (id, floor, number, difficulty_level, sector, max_occupancy, status, description, priority)
 VALUES
-  ('10000000-0000-0000-0000-000000000001', 1, 101, 1, 'LOW'),
-  ('10000000-0000-0000-0000-000000000002', 2, 205, 3, 'MEDIUM'),
-  ('10000000-0000-0000-0000-000000000003', 3, 309, 4, 'HIGH');
+    ('10000000-0000-0000-0000-000000000001', 1, 101, 1, 'A', 4, 'AVAILABLE', 'Quarto térreo próximo à recepção.', 'LOW'),
+    ('10000000-0000-0000-0000-000000000002', 2, 205, 3, 'B', 6, 'AVAILABLE', 'Sala no segundo andar, ala B.', 'MEDIUM'),
+    ('10000000-0000-0000-0000-000000000003', 3, 309, 4, 'C', 2, 'MAINTENANCE', 'Sala em manutenção leve.', 'HIGH');
 
 -- Inserindo visitas (visits)
 -- Campos: id, id_room (FK), start_date, end_date, scheduling_date, status, duration_minutes, notes
 INSERT INTO visits (id, id_room, start_date, end_date, scheduling_date, status, duration_minutes, notes) VALUES
-    ('20000000-0000-0000-0000-000000000001', '10000000-0000-0000-0000-000000000001', CURRENT_DATE + INTERVAL '1 day', NULL, NOW(), 'SCHEDULED', NULL, 'Visita agendada para avaliação inicial.'),
-    ('20000000-0000-0000-0000-000000000002', '10000000-0000-0000-0000-000000000002', CURRENT_DATE - INTERVAL '3 day', CURRENT_DATE - INTERVAL '3 day', NOW() - INTERVAL '5 day', 'COMPLETED', 90, 'Visita concluída com melhorias implementadas.'),
-    ('20000000-0000-0000-0000-000000000003', '10000000-0000-0000-0000-000000000003', CURRENT_DATE + INTERVAL '5 day', NULL, NOW() - INTERVAL '1 day', 'SCHEDULED', NULL, 'Aguardando confirmação de participantes.');
+        ('20000000-0000-0000-0000-000000000001', '10000000-0000-0000-0000-000000000001', CURRENT_DATE + INTERVAL '1 day', NULL, NOW(), 'SCHEDULED', NULL, 'Visita agendada para avaliação inicial.'),
+        ('20000000-0000-0000-0000-000000000002', '10000000-0000-0000-0000-000000000002', CURRENT_DATE - INTERVAL '3 day', CURRENT_DATE - INTERVAL '3 day', NOW() - INTERVAL '5 day', 'COMPLETED', 90, 'Visita concluída com melhorias implementadas.'),
+        ('20000000-0000-0000-0000-000000000003', '10000000-0000-0000-0000-000000000003', CURRENT_DATE + INTERVAL '5 day', NULL, NOW() - INTERVAL '1 day', 'SCHEDULED', NULL, 'Aguardando confirmação de participantes.');
 
 -- Relacionamentos users_visits
 -- Campos: id, id_user, id_visit, volunteer_feedback, attendance_confirmed
