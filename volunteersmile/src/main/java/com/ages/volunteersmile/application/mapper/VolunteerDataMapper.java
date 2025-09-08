@@ -3,6 +3,7 @@ package com.ages.volunteersmile.application.mapper;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Component;
 
@@ -63,7 +64,7 @@ public class VolunteerDataMapper {
     public List<VolunteerDTO> mapFrom(List<Volunteer> volunteers) {
         return volunteers.stream()
                 .map(this::mapFrom)
-                .toList();
+                .collect(Collectors.toList());
     }
 
     private void mapStatusToDto(Volunteer volunteer, VolunteerDTO dto) {

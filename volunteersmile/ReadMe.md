@@ -95,13 +95,20 @@ Este arquivo configura a sua aplicação Spring para se conectar ao banco de dad
 2.  Crie um novo arquivo chamado `application-local.properties`.
 3.  Adicione o seguinte conteúdo, garantindo que as credenciais sejam **idênticas** às do arquivo `.env`:
     `properties
+
     # Credenciais para o Banco de Dados a rodar no Docker
+
     spring.datasource.url=jdbc:postgresql://localhost:5432/volunteersmile_db
     spring.datasource.username=postgres
     spring.datasource.password=postgres
-    spring.sql.init.mode=never
+
+    # Executa o data.sql após o schema do Flyway (apenas no profile local)
+
+    spring.sql.init.mode=always
     spring.jpa.defer-datasource-initialization=false
     `
+
+> Observação: o schema é gerenciado pelo Flyway (arquivos em `src/main/resources/db/migration`). O `data.sql` em `src/main/resources` insere dados de exemplo automaticamente no profile `local`.
 
 ### 4. A Subir o Banco de Dados
 
