@@ -43,7 +43,7 @@ VALUES (
     'ADMIN',
     'admin@volunteersmile.com',
     -- senha: Admin123!
-    '$2a$10$wO3eGhnAE8rumVn6dZPw.eI0/fWznuaCG2lLBVmOAXoJ1Bs8LojF6',
+    '$2a$12$uqvuf1yWPIDnK11rIth22OLpKCRKP6.8UUaeTCNlAuzWya61Gjcbi',
     'Administrador',
     '+55 11 90000-0000',
     'ACTIVE',
@@ -62,7 +62,7 @@ VALUES (
     'VOLUNTEER',
     'joao.silva@volunteersmile.com',
     -- senha: Voluntario123!
-    '$2a$10$HtZpZaZX6mE6xPD58Ll35.f.xYzUPrK1V.VYqVQXHhj6nQSLr9EZW',
+    '$2a$12$HjzWAYlizCqWM.mJt7TXDenHcOB5VJzW2SH4csqWeWeIxRVRrqv0m',
     'João Silva',
     '+55 11 98888-1111',
     'PENDING',
@@ -77,7 +77,7 @@ VALUES (
     'VOLUNTEER',
     'maria.oliveira@volunteersmile.com',
     -- senha: Voluntaria123!
-    '$2a$10$O0W1S49AmDNpfilqwYjzepnJDsLotfjL7vQfAlWTMwVzKhI6.wK.2',
+    '$2a$12$kgmsRbHUQz4H3qtsnAeQ1Ov2VKajuFdOwLmV6eNbb4ep9wLGHvQpq',
     'Maria Oliveira',
     '+55 11 97777-2222',
     'ACTIVE',
