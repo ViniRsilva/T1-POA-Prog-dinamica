@@ -92,8 +92,8 @@ VALUES (
 -- Atenção: pela migration V1, rooms possui colunas NOT NULL extras: sector, max_occupancy, status, description, priority
 INSERT INTO rooms (id, floor, number, difficulty_level, sector, max_occupancy, status, description, priority)
 VALUES
-    ('10000000-0000-0000-0000-000000000001', 1, 101, 1, 'A', 4, 'AVAILABLE', 'Quarto térreo próximo à recepção.', 'LOW'),
-    ('10000000-0000-0000-0000-000000000002', 2, 205, 3, 'B', 6, 'AVAILABLE', 'Sala no segundo andar, ala B.', 'MEDIUM'),
+    ('10000000-0000-0000-0000-000000000001', 1, 101, 1, 'A', 4, 'ACTIVE', 'Quarto térreo próximo à recepção.', 'LOW'),
+    ('10000000-0000-0000-0000-000000000002', 2, 205, 3, 'B', 6, 'ACTIVE', 'Sala no segundo andar, ala B.', 'MEDIUM'),
     ('10000000-0000-0000-0000-000000000003', 3, 309, 4, 'C', 2, 'MAINTENANCE', 'Sala em manutenção leve.', 'HIGH');
 
 -- Inserindo visitas (visits)
