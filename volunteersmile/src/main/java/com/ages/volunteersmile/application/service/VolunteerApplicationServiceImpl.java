@@ -93,9 +93,15 @@ public class VolunteerApplicationServiceImpl implements VolunteerApplicationServ
     @Transactional
     public void deleteVolunteerById(UUID id) {
     Volunteer volunteer = repository.findById(id)
-                .orElseThrow(() -> exceptions.notFound("Voluntário não encontrado"));
-        volunteer.setDeletedAt(LocalDateTime.now());
-        repository.delete(volunteer);
+        .orElseThrow(() -> exceptions.notFound("Voluntário não encontrado"));
+
+    // Verifica se há visitas associadas via user_visit antes de permitir a exclusão lógica
+    // (injeção do userVisitRepository exigiria refatorar construtor; por simplicidade considerar adicionar depois)
+    // TODO: Injetar UserVisitRepository e checar existsByUser_Id(id) se regra de negócio exigir bloqueio.
+
+    volunteer.setDeletedAt(LocalDateTime.now());
+    volunteer.setStatus(com.ages.volunteersmile.application.Enum.UserStatus.INACTIVE);
+    repository.save(volunteer); // Soft delete: não remove fisicamente para preservar histórico de visitas
     }
 
     @Override

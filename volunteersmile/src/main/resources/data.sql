@@ -3,26 +3,37 @@
 -- Este arquivo é executado no profile "local". O schema é gerenciado pelo Flyway (V1__create_tables.sql).
 -- Em application-local.properties: spring.sql.init.mode=always e spring.jpa.defer-datasource-initialization=true
 
--- Reset dos dados dummy (idempotente): remove os registros pelos IDs antes de inserir novamente
--- Ordem importa por causa de FKs: users_visits -> visits -> users -> rooms
-DELETE FROM users_visits WHERE id IN (
-    '30000000-0000-0000-0000-000000000001',
-    '30000000-0000-0000-0000-000000000002',
-    '30000000-0000-0000-0000-000000000003'
-);
+-- Reset dos dados dummy (idempotente): agora removendo por FKs também
+-- Motivo da mudança: se novas linhas forem criadas em users_visits com outros IDs (UUID aleatórios),
+-- o delete anterior (por id fixo) não removia e gerava erro de FK ao tentar deletar users.
 
+-- 1) Remove relacionamentos dependentes (todas as ligações envolvendo os usuários/visitas de exemplo)
+DELETE FROM users_visits
+WHERE id_user IN (
+    '00000000-0000-0000-0000-000000000101',
+    '00000000-0000-0000-0000-000000000102'
+)
+   OR id_visit IN (
+       '20000000-0000-0000-0000-000000000001',
+       '20000000-0000-0000-0000-000000000002',
+       '20000000-0000-0000-0000-000000000003'
+   );
+
+-- 2) Remove visitas de exemplo
 DELETE FROM visits WHERE id IN (
     '20000000-0000-0000-0000-000000000001',
     '20000000-0000-0000-0000-000000000002',
     '20000000-0000-0000-0000-000000000003'
 );
 
+-- 3) Remove usuários de exemplo (admin + voluntários)
 DELETE FROM users WHERE id IN (
-    '00000000-0000-0000-0000-000000000001', -- admin
-    '00000000-0000-0000-0000-000000000101', -- joao
-    '00000000-0000-0000-0000-000000000102'  -- maria
+    '00000000-0000-0000-0000-000000000001',
+    '00000000-0000-0000-0000-000000000101',
+    '00000000-0000-0000-0000-000000000102'
 );
 
+-- 4) Remove salas de exemplo
 DELETE FROM rooms WHERE id IN (
     '10000000-0000-0000-0000-000000000001',
     '10000000-0000-0000-0000-000000000002',
