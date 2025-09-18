@@ -23,7 +23,13 @@ WHERE id_user IN (
 DELETE FROM visits WHERE id IN (
     '20000000-0000-0000-0000-000000000001',
     '20000000-0000-0000-0000-000000000002',
-    '20000000-0000-0000-0000-000000000003'
+    '20000000-0000-0000-0000-000000000003',
+    '20000000-0000-0000-0000-000000000004',
+    '20000000-0000-0000-0000-000000000005',
+    '20000000-0000-0000-0000-000000000006',
+    '20000000-0000-0000-0000-000000000007',
+    '20000000-0000-0000-0000-000000000008',
+    '20000000-0000-0000-0000-000000000009'
 );
 
 -- 3) Remove usuários de exemplo (admin + voluntários)
@@ -37,7 +43,13 @@ DELETE FROM users WHERE id IN (
 DELETE FROM rooms WHERE id IN (
     '10000000-0000-0000-0000-000000000001',
     '10000000-0000-0000-0000-000000000002',
-    '10000000-0000-0000-0000-000000000003'
+    '10000000-0000-0000-0000-000000000003',
+    '10000000-0000-0000-0000-000000000004',
+    '10000000-0000-0000-0000-000000000005',
+    '10000000-0000-0000-0000-000000000006',
+    '10000000-0000-0000-0000-000000000007',
+    '10000000-0000-0000-0000-000000000008',
+    '10000000-0000-0000-0000-000000000009'
 );
 
 -- Limpando tabela (útil se estiver usando ddl-auto=update). Comentado por padrão.
@@ -80,7 +92,7 @@ VALUES (
     NOW(),
     NULL,
     NULL,
-    2,
+    1,
     'Voluntário focado em logística.'
 ), (
     '00000000-0000-0000-0000-000000000102',
@@ -105,14 +117,28 @@ INSERT INTO rooms (id, floor, number, difficulty_level, sector, max_occupancy, s
 VALUES
     ('10000000-0000-0000-0000-000000000001', 1, 101, 1, 'A', 4, 'ACTIVE', 'Quarto térreo próximo à recepção.', 'LOW'),
     ('10000000-0000-0000-0000-000000000002', 2, 205, 3, 'B', 6, 'ACTIVE', 'Sala no segundo andar, ala B.', 'MEDIUM'),
-    ('10000000-0000-0000-0000-000000000003', 3, 309, 4, 'C', 2, 'MAINTENANCE', 'Sala em manutenção leve.', 'HIGH');
+    ('10000000-0000-0000-0000-000000000003', 3, 309, 4, 'C', 2, 'MAINTENANCE', 'Sala em manutenção leve.', 'HIGH'),
+    -- Novos quartos para testes da disponibilidade e ordenação por prioridade e dias desde última visita
+    ('10000000-0000-0000-0000-000000000004', 1, 102, 2, 'A', 4, 'ACTIVE', 'Quarto ativo com última visita há 30 dias.', 'HIGH'),
+    ('10000000-0000-0000-0000-000000000005', 1, 103, 1, 'A', 4, 'ACTIVE', 'Quarto ativo nunca visitado.', 'MEDIUM'),
+    ('10000000-0000-0000-0000-000000000006', 2, 206, 2, 'B', 6, 'ACTIVE', 'Quarto ativo com visita agendada hoje (indisponível).', 'HIGH'),
+    ('10000000-0000-0000-0000-000000000007', 2, 207, 1, 'B', 6, 'ACTIVE', 'Quarto ativo com última visita ontem.', 'LOW'),
+    ('10000000-0000-0000-0000-000000000008', 3, 310, 3, 'C', 2, 'ACTIVE', 'Quarto ativo com visitas há 40 e há 10 dias.', 'HIGH'),
+    ('10000000-0000-0000-0000-000000000009', 3, 311, 3, 'C', 2, 'ACTIVE', 'Quarto ativo com visita SCHEDULED abrangendo hoje (indisponível).', 'HIGH');
 
 -- Inserindo visitas (visits)
 -- Campos: id, id_room (FK), start_date, end_date, scheduling_date, status, duration_minutes, notes
 INSERT INTO visits (id, id_room, start_date, end_date, scheduling_date, status, duration_minutes, notes) VALUES
         ('20000000-0000-0000-0000-000000000001', '10000000-0000-0000-0000-000000000001', CURRENT_DATE + INTERVAL '1 day', NULL, NOW(), 'SCHEDULED', NULL, 'Visita agendada para avaliação inicial.'),
         ('20000000-0000-0000-0000-000000000002', '10000000-0000-0000-0000-000000000002', CURRENT_DATE - INTERVAL '3 day', CURRENT_DATE - INTERVAL '3 day', NOW() - INTERVAL '5 day', 'COMPLETED', 90, 'Visita concluída com melhorias implementadas.'),
-        ('20000000-0000-0000-0000-000000000003', '10000000-0000-0000-0000-000000000003', CURRENT_DATE + INTERVAL '5 day', NULL, NOW() - INTERVAL '1 day', 'SCHEDULED', NULL, 'Aguardando confirmação de participantes.');
+    ('20000000-0000-0000-0000-000000000003', '10000000-0000-0000-0000-000000000003', CURRENT_DATE + INTERVAL '5 day', NULL, NOW() - INTERVAL '1 day', 'SCHEDULED', NULL, 'Aguardando confirmação de participantes.'),
+    -- Novas visitas para cobrir cenários de disponibilidade e última visita
+    ('20000000-0000-0000-0000-000000000004', '10000000-0000-0000-0000-000000000004', CURRENT_DATE - INTERVAL '30 day', CURRENT_DATE - INTERVAL '30 day', NOW() - INTERVAL '35 day', 'COMPLETED', 60, 'Última visita há 30 dias.'),
+    ('20000000-0000-0000-0000-000000000005', '10000000-0000-0000-0000-000000000006', CURRENT_DATE, NULL, NOW(), 'SCHEDULED', NULL, 'Visita marcada para hoje (indisponível).'),
+    ('20000000-0000-0000-0000-000000000006', '10000000-0000-0000-0000-000000000007', CURRENT_DATE - INTERVAL '1 day', CURRENT_DATE - INTERVAL '1 day', NOW() - INTERVAL '2 day', 'COMPLETED', 45, 'Última visita ontem.'),
+    ('20000000-0000-0000-0000-000000000007', '10000000-0000-0000-0000-000000000008', CURRENT_DATE - INTERVAL '40 day', CURRENT_DATE - INTERVAL '40 day', NOW() - INTERVAL '41 day', 'COMPLETED', 30, 'Visita antiga (40 dias).'),
+    ('20000000-0000-0000-0000-000000000008', '10000000-0000-0000-0000-000000000008', CURRENT_DATE - INTERVAL '10 day', CURRENT_DATE - INTERVAL '10 day', NOW() - INTERVAL '9 day', 'COMPLETED', 30, 'Visita mais recente (10 dias).'),
+    ('20000000-0000-0000-0000-000000000009', '10000000-0000-0000-0000-000000000009', CURRENT_DATE - INTERVAL '1 day', CURRENT_DATE + INTERVAL '1 day', NOW(), 'SCHEDULED', NULL, 'Visita SCHEDULED multi-dia abrangendo hoje (indisponível).');
 
 -- Relacionamentos users_visits
 -- Campos: id, id_user, id_visit, volunteer_feedback, attendance_confirmed

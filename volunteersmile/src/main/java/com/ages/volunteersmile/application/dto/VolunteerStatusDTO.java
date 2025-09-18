@@ -1,12 +1,4 @@
 package com.ages.volunteersmile.application.dto;
 
-import lombok.Getter;
-import lombok.Setter;
-
-@Getter
-@Setter
-public class VolunteerStatusDTO {
-    private Enum ACTIVE;
-    private Enum INACTIVE;
-    private Enum PENDING;
-}
+// This DTO was invalid and unused. Kept as a placeholder to avoid breaking imports; remove if not referenced.
+public class VolunteerStatusDTO {}
