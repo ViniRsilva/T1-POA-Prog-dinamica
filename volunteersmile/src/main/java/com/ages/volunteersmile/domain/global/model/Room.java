@@ -24,9 +24,6 @@ public class Room {
     @Column(nullable = false)
     private Integer number;
 
-    @Column(name = "difficulty_level", nullable = false)
-    private Integer difficultyLevel;
-
     @Column(nullable = false)
     private String sector;
 

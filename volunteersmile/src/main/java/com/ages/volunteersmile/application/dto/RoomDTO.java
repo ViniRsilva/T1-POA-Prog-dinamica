@@ -12,8 +12,6 @@ public class RoomDTO {
     private String id;
     private Integer floor;
     private Integer number;
-    @JsonProperty("difficulty_level")
-    private Integer difficultyLevel;
     @JsonProperty("max_occupancy")
     private Integer maxOccupancy;
     private String sector;
