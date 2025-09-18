@@ -52,4 +52,19 @@ public class VisitController {
 	public ResponseEntity<List<VisitDTO>> listAll() {
 		return ResponseEntity.ok(visitService.listAll());
 	}
+
+    @Operation(summary = "Busca a próxima visita do voluntário",
+            description = "Retorna a próxima visita agendada para o voluntário especificado")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Próxima visita encontrada"),
+            @ApiResponse(responseCode = "404", description = "Voluntário não encontrado ou não possui próximas visitas")
+    })
+    @GetMapping(value = "/volunteer/{volunteerId}/next", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<VisitDTO> getNextVisitByVolunteer(
+            @Parameter(description = "ID do voluntário", required = true)
+            @PathVariable Long volunteerId) {
+        VisitDTO nextVisit = visitService.getNextVisitByVolunteer(volunteerId);
+        return ResponseEntity.ok(nextVisit);
+    }
+
 }
