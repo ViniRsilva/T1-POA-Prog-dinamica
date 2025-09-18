@@ -1,10 +1,12 @@
 package com.ages.volunteersmile.application.service;
 
-import com.ages.volunteersmile.application.dto.CreateRoomDTO;
-import com.ages.volunteersmile.application.dto.RoomDTO;
-
+import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
+
+import com.ages.volunteersmile.application.dto.CreateRoomDTO;
+import com.ages.volunteersmile.application.dto.RoomAvailableDTO;
+import com.ages.volunteersmile.application.dto.RoomDTO;
 
 public interface RoomService {
 
@@ -17,4 +19,6 @@ public interface RoomService {
     RoomDTO updateRoom(UUID id, com.ages.volunteersmile.application.dto.UpdateRoomDTO request);
 
     void deleteRoom(UUID id);
+
+    List<RoomAvailableDTO> listAvailableByDate(LocalDate date);
 }

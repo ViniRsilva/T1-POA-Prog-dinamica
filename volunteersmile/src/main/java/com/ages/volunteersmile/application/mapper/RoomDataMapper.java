@@ -1,15 +1,17 @@
 package com.ages.volunteersmile.application.mapper;
 
+import java.time.format.DateTimeFormatter;
+import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
+
 import com.ages.volunteersmile.application.Enum.RoomPriority;
 import com.ages.volunteersmile.application.dto.CreateRoomDTO;
 import com.ages.volunteersmile.application.dto.FeedbackDTO;
+import com.ages.volunteersmile.application.dto.RoomAvailableDTO;
 import com.ages.volunteersmile.application.dto.RoomDTO;
 import com.ages.volunteersmile.domain.global.model.Room;
 import com.ages.volunteersmile.domain.global.model.RoomFeedback;
-
-import java.time.format.DateTimeFormatter;
-import java.util.List;
-import java.util.stream.Collectors;
 
 public final class RoomDataMapper {
 
@@ -41,12 +43,23 @@ public final class RoomDataMapper {
         dto.setStatus(room.getStatus().name());
         dto.setPriority(room.getPriority().name());
         dto.setDescription(room.getDescription());
+        if (dto.getVisits() == null) {
+            dto.setVisits(0);
+        }
         dto.setFeedbacks(toFeedbackResponses(room.getFeedbacks()));
         return dto;
     }
 
     public static List<RoomDTO> toResponses(List<Room> rooms) {
         return rooms.stream().map(RoomDataMapper::toResponse).collect(Collectors.toList());
+    }
+
+    public static RoomAvailableDTO toAvailableResponse(Room room, Long daysSinceLastVisit) {
+        RoomAvailableDTO dto = new RoomAvailableDTO();
+        dto.setId(room.getId());
+        dto.setNumber(room.getNumber());
+        dto.setDaysSinceLastVisit(Objects.requireNonNullElse(daysSinceLastVisit, 0L));
+        return dto;
     }
 
     private static List<FeedbackDTO> toFeedbackResponses(List<RoomFeedback> feedbacks) {
