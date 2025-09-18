@@ -1,0 +1,2 @@
+ALTER TABLE visits ADD COLUMN total_time INTEGER;
+

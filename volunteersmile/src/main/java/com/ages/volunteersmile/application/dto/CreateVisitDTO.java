@@ -26,6 +26,9 @@ public class CreateVisitDTO {
     @Min(1)
     private Integer durationMinutes; // opcional, calculado posteriormente
 
+    @Min(1)
+    private Integer totalTime;
+
     @Size(max = 5000)
     private String notes;
 }

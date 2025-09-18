@@ -20,5 +20,6 @@ public class VisitDTO {
     private LocalDateTime schedulingDate;
     private String status;
     private Integer durationMinutes;
+    private Integer totalTime;
     private String notes;
 }

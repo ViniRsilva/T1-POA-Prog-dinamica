@@ -50,6 +50,9 @@ public class Visit {
     @Column(name = "duration_minutes")
     private Integer durationMinutes;
 
+    @Column(name = "total_time")
+    private Integer totalTime;
+
     @Column(columnDefinition = "TEXT")
     private String notes;
 
