@@ -8,4 +8,5 @@ import com.ages.volunteersmile.application.dto.VisitDTO;
 public interface VisitService {
     VisitDTO createVisit(CreateVisitDTO dto);
     List<VisitDTO> listAll();
+    VisitDTO getNextVisitByVolunteer(UUID volunteerId);
 }
