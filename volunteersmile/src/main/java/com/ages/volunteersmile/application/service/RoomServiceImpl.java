@@ -141,18 +141,5 @@ public class RoomServiceImpl implements RoomService {
                 .collect(Collectors.toList());
     }
 
-    @Override
-    @Transactional
-    public VisitDTO getNextVisitByVolunteer(UUID volunteerId) {
-        User volunteer = volunteerRepository.findById(volunteerId)
-                .orElseThrow(() -> exceptions.notFound("Voluntário não encontrado"));
-
-        UserVisit nextUserVisit = userVisitRepository
-                .findFirstByUser_IdAndVisit_StartDateAfterOrderByVisit_StartDateAsc(
-                        volunteerId, java.time.LocalDateTime.now())
-                .orElseThrow(() -> exceptions.notFound("Nenhuma próxima visita encontrada para o voluntário"));
-
-        return VisitDataMapper.toDtoWithVolunteer(nextUserVisit.getVisit(), volunteer);
-    }
 
 }
