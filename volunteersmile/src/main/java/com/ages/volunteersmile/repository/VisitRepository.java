@@ -21,4 +21,9 @@ public interface VisitRepository extends JpaRepository<Visit, UUID> {
 		 + "GROUP BY v.room.id")
 	List<Object[]> findLastVisitDateByRoomIdsUpTo(@Param("roomIds") List<UUID> roomIds,
 												  @Param("targetDate") LocalDate targetDate);
+
+    List<UserVisit> findByVisitIdIn(List<UUID> visitIds);
+
+    Optional<UserVisit> findFirstByUser_IdAndVisit_StartDateAfterOrderByVisit_StartDateAsc(
+            UUID userId, LocalDateTime now);
 }
