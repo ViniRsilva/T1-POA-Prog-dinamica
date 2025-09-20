@@ -24,6 +24,5 @@ public interface VisitRepository extends JpaRepository<Visit, UUID> {
 
     List<UserVisit> findByVisitIdIn(List<UUID> visitIds);
 
-    Optional<UserVisit> findFirstByUser_IdAndVisit_StartDateAfterOrderByVisit_StartDateAsc(
-            UUID userId, LocalDateTime now);
+    Optional<UserVisit>
 }
