@@ -1,16 +1,13 @@
 package com.ages.volunteersmile.adapter.controller.visit;
 
 import java.net.URI;
+import java.time.LocalDate;
 import java.util.List;
 
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.ages.volunteersmile.application.dto.CreateVisitDTO;
 import com.ages.volunteersmile.application.dto.VisitDTO;
@@ -51,5 +48,19 @@ public class VisitController {
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<VisitDTO>> listAll() {
 		return ResponseEntity.ok(visitService.listAll());
+	}
+
+	@Operation(summary = "Lista visitas que ocorrem no dia informado")
+	@ApiResponses({ @ApiResponse(responseCode = "200", description = "Lista retornada") })
+	@GetMapping(value = "/day", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<List<VisitDTO>> listByDay(@RequestParam("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
+		return ResponseEntity.ok(visitService.listByDay(date));
+	}
+
+	@Operation(summary = "Lista visitas que ocorrem no mês da data informada")
+	@ApiResponses({ @ApiResponse(responseCode = "200", description = "Lista retornada") })
+	@GetMapping(value = "/month", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<List<VisitDTO>> listByMonth(@RequestParam("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dateInMonth) {
+		return ResponseEntity.ok(visitService.listByMonth(dateInMonth));
 	}
 }
