@@ -1,6 +1,7 @@
 package com.ages.volunteersmile.repository;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -21,4 +22,13 @@ public interface VisitRepository extends JpaRepository<Visit, UUID> {
 		 + "GROUP BY v.room.id")
 	List<Object[]> findLastVisitDateByRoomIdsUpTo(@Param("roomIds") List<UUID> roomIds,
 												  @Param("targetDate") LocalDate targetDate);
+
+	@Query("""
+       SELECT v
+       FROM Visit v
+       WHERE v.startDate < :end
+         AND (v.endDate IS NULL OR v.endDate >= :start)
+       """)
+	List<Visit> findAllOverlapping(@Param("start") LocalDateTime start,
+								   @Param("end")   LocalDateTime end);
 }
