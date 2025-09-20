@@ -140,6 +140,4 @@ public class RoomServiceImpl implements RoomService {
                 })
                 .collect(Collectors.toList());
     }
-
-
 }

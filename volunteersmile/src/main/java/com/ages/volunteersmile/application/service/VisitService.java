@@ -1,6 +1,7 @@
 package com.ages.volunteersmile.application.service;
 
 import java.util.List;
+import java.util.UUID;
 
 import com.ages.volunteersmile.application.dto.CreateVisitDTO;
 import com.ages.volunteersmile.application.dto.VisitDTO;
