@@ -23,7 +23,6 @@ public final class RoomDataMapper {
         Room r = new Room();
         r.setFloor(req.getFloor());
         r.setNumber(req.getNumber());
-        r.setDifficultyLevel(req.getDifficultyLevel());
         r.setMaxOccupancy(req.getMaxOccupancy());
         r.setSector(req.getSector());
         r.setStatus(req.getStatus());
@@ -37,7 +36,6 @@ public final class RoomDataMapper {
         dto.setId(room.getId().toString());
         dto.setFloor(room.getFloor());
         dto.setNumber(room.getNumber());
-        dto.setDifficultyLevel(room.getDifficultyLevel());
         dto.setMaxOccupancy(room.getMaxOccupancy());
         dto.setSector(room.getSector());
         dto.setStatus(room.getStatus().name());

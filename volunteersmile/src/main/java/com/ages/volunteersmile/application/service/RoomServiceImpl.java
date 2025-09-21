@@ -72,7 +72,6 @@ public class RoomServiceImpl implements RoomService {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
         room.setFloor(request.getFloor());
         room.setNumber(request.getNumber());
-        room.setDifficultyLevel(request.getDifficultyLevel());
         room.setMaxOccupancy(request.getMaxOccupancy());
         room.setSector(request.getSector());
         room.setStatus(request.getStatus());

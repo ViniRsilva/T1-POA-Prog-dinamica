@@ -113,18 +113,18 @@ VALUES (
 
 -- Inserindo salas (rooms)
 -- Atenção: pela migration V1, rooms possui colunas NOT NULL extras: sector, max_occupancy, status, description, priority
-INSERT INTO rooms (id, floor, number, difficulty_level, sector, max_occupancy, status, description, priority)
+INSERT INTO rooms (id, floor, number, sector, max_occupancy, status, description, priority)
 VALUES
-    ('10000000-0000-0000-0000-000000000001', 1, 101, 1, 'A', 4, 'ACTIVE', 'Quarto térreo próximo à recepção.', 'LOW'),
-    ('10000000-0000-0000-0000-000000000002', 2, 205, 3, 'B', 6, 'ACTIVE', 'Sala no segundo andar, ala B.', 'MEDIUM'),
-    ('10000000-0000-0000-0000-000000000003', 3, 309, 4, 'C', 2, 'MAINTENANCE', 'Sala em manutenção leve.', 'HIGH'),
+    ('10000000-0000-0000-0000-000000000001', 1, 101,  'A', 4, 'ACTIVE', 'Quarto térreo próximo à recepção.', 'LOW'),
+    ('10000000-0000-0000-0000-000000000002', 2, 205,  'B', 6, 'ACTIVE', 'Sala no segundo andar, ala B.', 'MEDIUM'),
+    ('10000000-0000-0000-0000-000000000003', 3, 309,  'C', 2, 'MAINTENANCE', 'Sala em manutenção leve.', 'HIGH'),
     -- Novos quartos para testes da disponibilidade e ordenação por prioridade e dias desde última visita
-    ('10000000-0000-0000-0000-000000000004', 1, 102, 2, 'A', 4, 'ACTIVE', 'Quarto ativo com última visita há 30 dias.', 'HIGH'),
-    ('10000000-0000-0000-0000-000000000005', 1, 103, 1, 'A', 4, 'ACTIVE', 'Quarto ativo nunca visitado.', 'MEDIUM'),
-    ('10000000-0000-0000-0000-000000000006', 2, 206, 2, 'B', 6, 'ACTIVE', 'Quarto ativo com visita agendada hoje (indisponível).', 'HIGH'),
-    ('10000000-0000-0000-0000-000000000007', 2, 207, 1, 'B', 6, 'ACTIVE', 'Quarto ativo com última visita ontem.', 'LOW'),
-    ('10000000-0000-0000-0000-000000000008', 3, 310, 3, 'C', 2, 'ACTIVE', 'Quarto ativo com visitas há 40 e há 10 dias.', 'HIGH'),
-    ('10000000-0000-0000-0000-000000000009', 3, 311, 3, 'C', 2, 'ACTIVE', 'Quarto ativo com visita SCHEDULED abrangendo hoje (indisponível).', 'HIGH');
+    ('10000000-0000-0000-0000-000000000004', 1, 102,  'A', 4, 'ACTIVE', 'Quarto ativo com última visita há 30 dias.', 'HIGH'),
+    ('10000000-0000-0000-0000-000000000005', 1, 103,  'A', 4, 'ACTIVE', 'Quarto ativo nunca visitado.', 'MEDIUM'),
+    ('10000000-0000-0000-0000-000000000006', 2, 206,  'B', 6, 'ACTIVE', 'Quarto ativo com visita agendada hoje (indisponível).', 'HIGH'),
+    ('10000000-0000-0000-0000-000000000007', 2, 207,  'B', 6, 'ACTIVE', 'Quarto ativo com última visita ontem.', 'LOW'),
+    ('10000000-0000-0000-0000-000000000008', 3, 310,  'C', 2, 'ACTIVE', 'Quarto ativo com visitas há 40 e há 10 dias.', 'HIGH'),
+    ('10000000-0000-0000-0000-000000000009', 3, 311,  'C', 2, 'ACTIVE', 'Quarto ativo com visita SCHEDULED abrangendo hoje (indisponível).', 'HIGH');
 
 -- Inserindo visitas (visits)
 -- Campos: id, id_room (FK), start_date, end_date, scheduling_date, status, duration_minutes, notes
