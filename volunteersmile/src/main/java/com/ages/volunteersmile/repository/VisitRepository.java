@@ -29,6 +29,6 @@ public interface VisitRepository extends JpaRepository<Visit, UUID> {
        WHERE v.startDate < :end
          AND (v.endDate IS NULL OR v.endDate >= :start)
        """)
-	List<Visit> findAllOverlapping(@Param("start") LocalDateTime start,
-								   @Param("end")   LocalDateTime end);
+	List<Visit> findAllOverlapping(@Param("start") LocalDate start,
+								   @Param("end")   LocalDate end);
 }

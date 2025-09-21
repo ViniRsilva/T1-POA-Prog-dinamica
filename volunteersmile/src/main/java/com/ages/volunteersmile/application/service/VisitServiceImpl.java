@@ -81,10 +81,10 @@ public class VisitServiceImpl implements VisitService {
     @Override
     @Transactional
     public List<VisitDTO> listByDay(LocalDate date) {
-        LocalDateTime start = date.atStartOfDay();
-        LocalDateTime end   = date.plusDays(1).atStartOfDay();
+//        LocalDateTime start = date.atStartOfDay();
+//        LocalDateTime end   = date.plusDays(1).atStartOfDay();
 
-        List<Visit> visits = visitRepository.findAllOverlapping(start, end);
+        List<Visit> visits = visitRepository.findAllOverlapping(date, date.plusDays(1));
 
         Map<UUID, User> visitVolunteerMap = visits.isEmpty()
                 ? Collections.emptyMap()
@@ -110,10 +110,7 @@ public class VisitServiceImpl implements VisitService {
         LocalDate firstOfMonth     = anyDateInMonth.withDayOfMonth(1);
         LocalDate firstOfNextMonth = firstOfMonth.plusMonths(1);
 
-        LocalDateTime start = firstOfMonth.atStartOfDay();
-        LocalDateTime end   = firstOfNextMonth.atStartOfDay();
-
-        List<Visit> visits = visitRepository.findAllOverlapping(start, end);
+        List<Visit> visits = visitRepository.findAllOverlapping(firstOfMonth, firstOfNextMonth);
 
         Map<UUID, User> visitVolunteerMap = visits.isEmpty()
                 ? Collections.emptyMap()
