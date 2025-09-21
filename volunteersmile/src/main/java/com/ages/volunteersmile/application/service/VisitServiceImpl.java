@@ -1,8 +1,8 @@
 package com.ages.volunteersmile.application.service;
 
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
@@ -75,6 +75,58 @@ public class VisitServiceImpl implements VisitService {
                 .collect(Collectors.toMap(uv -> uv.getVisit().getId(), uv -> uv.getUser(), (a,b)->a));
         return visits.stream()
                 .map(v -> VisitDataMapper.toDtoWithVolunteer(v, visitVolunteerMap.get(v.getId())))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    @Transactional
+    public List<VisitDTO> listByDay(LocalDate date) {
+//        LocalDateTime start = date.atStartOfDay();
+//        LocalDateTime end   = date.plusDays(1).atStartOfDay();
+
+        List<Visit> visits = visitRepository.findAllOverlapping(date, date.plusDays(1));
+
+        Map<UUID, User> visitVolunteerMap = visits.isEmpty()
+                ? Collections.emptyMap()
+                : userVisitRepository.findByVisitIdIn(
+                        visits.stream().map(Visit::getId).toList()
+                ).stream()
+                .collect(Collectors.toMap(
+                        uv -> uv.getVisit().getId(),
+                        UserVisit::getUser,
+                        (a, b) -> a
+                ));
+
+        final Map<UUID, User> finalMap = visitVolunteerMap;
+
+        return visits.stream()
+                .map(v -> VisitDataMapper.toDtoWithVolunteer(v, finalMap.get(v.getId())))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    @Transactional
+    public List<VisitDTO> listByMonth(LocalDate anyDateInMonth) {
+        LocalDate firstOfMonth     = anyDateInMonth.withDayOfMonth(1);
+        LocalDate firstOfNextMonth = firstOfMonth.plusMonths(1);
+
+        List<Visit> visits = visitRepository.findAllOverlapping(firstOfMonth, firstOfNextMonth);
+
+        Map<UUID, User> visitVolunteerMap = visits.isEmpty()
+                ? Collections.emptyMap()
+                : userVisitRepository.findByVisitIdIn(
+                        visits.stream().map(Visit::getId).toList()
+                ).stream()
+                .collect(Collectors.toMap(
+                        uv -> uv.getVisit().getId(),
+                        UserVisit::getUser,
+                        (a, b) -> a
+                ));
+
+        final Map<UUID, User> finalMap = visitVolunteerMap;
+
+        return visits.stream()
+                .map(v -> VisitDataMapper.toDtoWithVolunteer(v, finalMap.get(v.getId())))
                 .collect(Collectors.toList());
     }
 }
