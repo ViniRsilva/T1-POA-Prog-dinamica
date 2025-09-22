@@ -92,11 +92,14 @@ public class RoomServiceImpl implements RoomService {
     @Transactional
     @Override
     public List<RoomAvailableDTO> listAvailableByDate(LocalDate date) {
-    Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-    if (auth == null || auth.getPrincipal() == null) {
+            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+            if (auth == null || auth.getPrincipal() == null || !auth.isAuthenticated()) {
         throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Usuário não autenticado");
     }
-    String email = auth.getName(); 
+            String email = auth.getName(); // principal is the email (see JwtFilter)
+            if (email == null || "anonymousUser".equalsIgnoreCase(email)) {
+                throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Usuário não autenticado");
+            }
     var volunteer = volunteerRepository.findByEmail(email)
         .orElseThrow(() -> new ResponseStatusException(HttpStatus.FORBIDDEN, "Apenas voluntários podem acessar"));
     int accessLevel = volunteer.getRoomAccessLevel() != null ? volunteer.getRoomAccessLevel() : 0;
