@@ -3,7 +3,9 @@ package com.ages.volunteersmile.adapter.controller.visit;
 import java.net.URI;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.UUID;
 
+import com.ages.volunteersmile.application.dto.VisitTimeDTO;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -63,4 +65,16 @@ public class VisitController {
 	public ResponseEntity<List<VisitDTO>> listByMonth(@RequestParam("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dateInMonth) {
 		return ResponseEntity.ok(visitService.listByMonth(dateInMonth));
 	}
+
+    @Operation(summary = "Iniciar registro de visita", description = "Inicia o registro de tempo de visita do voluntário")
+    @PostMapping("/{id}/start")
+    public ResponseEntity<VisitDTO> startVisit(@PathVariable UUID id) {
+        return ResponseEntity.ok(visitService.startVisitById(id));
+    }
+
+    @Operation(summary = "Finalizar registro de visita", description = "Finaliza o registro de tempo de visita e salva a duração")
+    @PostMapping("/{id}/end")
+    public ResponseEntity<VisitTimeDTO> endVisit(@PathVariable UUID id) {
+        return ResponseEntity.ok(visitService.endVisitById(id));
+    }
 }
