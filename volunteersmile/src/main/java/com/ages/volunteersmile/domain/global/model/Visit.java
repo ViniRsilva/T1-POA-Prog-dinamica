@@ -35,10 +35,10 @@ public class Visit {
     private Room room;
 
     @Column(name = "start_date", nullable = false)
-    private LocalDate startDate;
+    private LocalDateTime startDate;
 
     @Column(name = "end_date")
-    private LocalDate endDate;
+    private LocalDateTime endDate;
 
     @Column(name = "scheduling_date", nullable = false)
     private LocalDateTime schedulingDate = LocalDateTime.now();

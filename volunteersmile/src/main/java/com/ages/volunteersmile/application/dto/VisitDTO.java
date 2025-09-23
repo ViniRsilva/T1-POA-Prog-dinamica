@@ -15,8 +15,8 @@ public class VisitDTO {
     private Integer roomNumber;
     private UUID volunteerId;
     private String volunteerName;
-    private LocalDate startDate;
-    private LocalDate endDate;
+    private LocalDateTime startDate;
+    private LocalDateTime endDate;
     private LocalDateTime schedulingDate;
     private String status;
     private Integer durationMinutes;

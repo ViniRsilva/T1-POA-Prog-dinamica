@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import com.ages.volunteersmile.application.dto.VisitTimeDTO;
 import org.springframework.stereotype.Service;
 
 import com.ages.volunteersmile.application.dto.CreateVisitDTO;
@@ -129,4 +130,34 @@ public class VisitServiceImpl implements VisitService {
                 .map(v -> VisitDataMapper.toDtoWithVolunteer(v, finalMap.get(v.getId())))
                 .collect(Collectors.toList());
     }
+    @Override
+    @Transactional
+    public VisitTimeDTO endVisitById(UUID visitId) {
+        Visit visit = visitRepository.findVisitById(visitId);
+
+        LocalDateTime endTime = LocalDateTime.now();
+        visit.setEndDate(endTime);
+
+        Integer durationMinutes = java.time.Duration.between(visit.getStartDate(), endTime).toMinutesPart();
+        visit.setDurationMinutes(durationMinutes);
+
+        visitRepository.save(visit);
+
+        String formatted = String.format("%dh %02dmin", durationMinutes / 60, durationMinutes % 60);
+        return new VisitTimeDTO(durationMinutes, formatted);
+    }
+
+    @Override
+    @Transactional
+    public VisitDTO startVisitById(UUID visitId) {
+        Visit visit = visitRepository.findVisitById(visitId);
+
+        LocalDateTime startTime = LocalDateTime.now();
+        visit.setStartDate(startTime);
+
+        visitRepository.save(visit);
+
+        return VisitDataMapper.toDto(visit);
+    }
+
 }
