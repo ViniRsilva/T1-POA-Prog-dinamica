@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
+import com.ages.volunteersmile.application.dto.VisitMonthDTO;
 import com.ages.volunteersmile.application.dto.VisitTimeDTO;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.MediaType;
@@ -62,7 +63,7 @@ public class VisitController {
 	@Operation(summary = "Lista visitas que ocorrem no mês da data informada")
 	@ApiResponses({ @ApiResponse(responseCode = "200", description = "Lista retornada") })
 	@GetMapping(value = "/month", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<List<VisitDTO>> listByMonth(@RequestParam("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dateInMonth) {
+	public ResponseEntity<List<VisitMonthDTO>> listByMonth(@RequestParam("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dateInMonth) {
 		return ResponseEntity.ok(visitService.listByMonth(dateInMonth));
 	}
 

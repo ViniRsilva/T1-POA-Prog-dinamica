@@ -128,17 +128,17 @@ VALUES
 
 -- Inserindo visitas (visits)
 -- Campos: id, id_room (FK), start_date, end_date, scheduling_date, status, duration_minutes, notes
-INSERT INTO visits (id, id_room, start_date, end_date, scheduling_date, status, duration_minutes, notes) VALUES
-        ('20000000-0000-0000-0000-000000000001', '10000000-0000-0000-0000-000000000001', NOW() + INTERVAL '1 day', NULL, NOW(), 'SCHEDULED', NULL, 'Visita agendada para avaliação inicial.'),
-        ('20000000-0000-0000-0000-000000000002', '10000000-0000-0000-0000-000000000002', NOW() - INTERVAL '3 day', NOW() - INTERVAL '3 day', NOW() - INTERVAL '5 day', 'COMPLETED', 90, 'Visita concluída com melhorias implementadas.'),
-    ('20000000-0000-0000-0000-000000000003', '10000000-0000-0000-0000-000000000003', NOW() + INTERVAL '5 day', NULL, NOW() - INTERVAL '1 day', 'SCHEDULED', NULL, 'Aguardando confirmação de participantes.'),
+INSERT INTO visits (id, id_room, start_date, end_date, schedule_date, status, duration_minutes, notes) VALUES
+        ('20000000-0000-0000-0000-000000000001', '10000000-0000-0000-0000-000000000001', NOW() + INTERVAL '1 day', NULL, CURRENT_DATE , 'SCHEDULED', NULL, 'Visita agendada para avaliação inicial.'),
+        ('20000000-0000-0000-0000-000000000002', '10000000-0000-0000-0000-000000000002', NOW() - INTERVAL '3 day', NOW() - INTERVAL '3 day', CURRENT_DATE  - INTERVAL '5 day', 'COMPLETED', 90, 'Visita concluída com melhorias implementadas.'),
+    ('20000000-0000-0000-0000-000000000003', '10000000-0000-0000-0000-000000000003', NOW() + INTERVAL '5 day', NULL, CURRENT_DATE  - INTERVAL '1 day', 'SCHEDULED', NULL, 'Aguardando confirmação de participantes.'),
     -- Novas visitas para cobrir cenários de disponibilidade e última visita
-    ('20000000-0000-0000-0000-000000000004', '10000000-0000-0000-0000-000000000004', NOW() - INTERVAL '30 day', NOW() - INTERVAL '30 day', NOW() - INTERVAL '35 day', 'COMPLETED', 60, 'Última visita há 30 dias.'),
-    ('20000000-0000-0000-0000-000000000005', '10000000-0000-0000-0000-000000000006', NOW(), NULL, NOW(), 'SCHEDULED', NULL, 'Visita marcada para hoje (indisponível).'),
-    ('20000000-0000-0000-0000-000000000006', '10000000-0000-0000-0000-000000000007', NOW() - INTERVAL '1 day', NOW() - INTERVAL '1 day', NOW() - INTERVAL '2 day', 'COMPLETED', 45, 'Última visita ontem.'),
-    ('20000000-0000-0000-0000-000000000007', '10000000-0000-0000-0000-000000000008', NOW() - INTERVAL '40 day', NOW() - INTERVAL '40 day', NOW() - INTERVAL '41 day', 'COMPLETED', 30, 'Visita antiga (40 dias).'),
-    ('20000000-0000-0000-0000-000000000008', '10000000-0000-0000-0000-000000000008', NOW() - INTERVAL '10 day', NOW() - INTERVAL '10 day', NOW() - INTERVAL '9 day', 'COMPLETED', 30, 'Visita mais recente (10 dias).'),
-    ('20000000-0000-0000-0000-000000000009', '10000000-0000-0000-0000-000000000009', NOW() - INTERVAL '1 day', NOW() + INTERVAL '1 day', NOW(), 'SCHEDULED', NULL, 'Visita SCHEDULED multi-dia abrangendo hoje (indisponível).');
+    ('20000000-0000-0000-0000-000000000004', '10000000-0000-0000-0000-000000000004', NOW() - INTERVAL '30 day', NOW() - INTERVAL '30 day', CURRENT_DATE  - INTERVAL '35 day', 'COMPLETED', 60, 'Última visita há 30 dias.'),
+    ('20000000-0000-0000-0000-000000000005', '10000000-0000-0000-0000-000000000006', NOW(), NULL, CURRENT_DATE , 'SCHEDULED', NULL, 'Visita marcada para hoje (indisponível).'),
+    ('20000000-0000-0000-0000-000000000006', '10000000-0000-0000-0000-000000000007', NOW() - INTERVAL '1 day', NOW() - INTERVAL '1 day', CURRENT_DATE  - INTERVAL '2 day', 'COMPLETED', 45, 'Última visita ontem.'),
+    ('20000000-0000-0000-0000-000000000007', '10000000-0000-0000-0000-000000000008', NOW() - INTERVAL '40 day', NOW() - INTERVAL '40 day', CURRENT_DATE  - INTERVAL '41 day', 'COMPLETED', 30, 'Visita antiga (40 dias).'),
+    ('20000000-0000-0000-0000-000000000008', '10000000-0000-0000-0000-000000000008', NOW() - INTERVAL '10 day', NOW() - INTERVAL '10 day', CURRENT_DATE  - INTERVAL '9 day', 'COMPLETED', 30, 'Visita mais recente (10 dias).'),
+    ('20000000-0000-0000-0000-000000000009', '10000000-0000-0000-0000-000000000009', NOW() - INTERVAL '1 day', NOW() + INTERVAL '1 day', CURRENT_DATE , 'SCHEDULED', NULL, 'Visita SCHEDULED multi-dia abrangendo hoje (indisponível).');
 
 -- Relacionamentos users_visits
 -- Campos: id, id_user, id_visit, volunteer_feedback, attendance_confirmed

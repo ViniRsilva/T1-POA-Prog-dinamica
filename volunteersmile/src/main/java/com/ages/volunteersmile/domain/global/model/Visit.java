@@ -40,8 +40,8 @@ public class Visit {
     @Column(name = "end_date")
     private LocalDateTime endDate;
 
-    @Column(name = "scheduling_date", nullable = false)
-    private LocalDateTime schedulingDate = LocalDateTime.now();
+    @Column(name = "schedule_date", nullable = false)
+    private LocalDate scheduleDate = LocalDate.now();
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
