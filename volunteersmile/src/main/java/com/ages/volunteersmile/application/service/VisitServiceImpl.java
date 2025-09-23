@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import com.ages.volunteersmile.application.dto.VisitMonthDTO;
 import com.ages.volunteersmile.application.dto.VisitTimeDTO;
 import org.springframework.stereotype.Service;
 
@@ -107,29 +108,23 @@ public class VisitServiceImpl implements VisitService {
 
     @Override
     @Transactional
-    public List<VisitDTO> listByMonth(LocalDate anyDateInMonth) {
+    public List<VisitMonthDTO> listByMonth(LocalDate anyDateInMonth) {
         LocalDate firstOfMonth     = anyDateInMonth.withDayOfMonth(1);
         LocalDate firstOfNextMonth = firstOfMonth.plusMonths(1);
 
         List<Visit> visits = visitRepository.findAllOverlapping(firstOfMonth, firstOfNextMonth);
 
-        Map<UUID, User> visitVolunteerMap = visits.isEmpty()
-                ? Collections.emptyMap()
-                : userVisitRepository.findByVisitIdIn(
-                        visits.stream().map(Visit::getId).toList()
-                ).stream()
-                .collect(Collectors.toMap(
-                        uv -> uv.getVisit().getId(),
-                        UserVisit::getUser,
-                        (a, b) -> a
-                ));
-
-        final Map<UUID, User> finalMap = visitVolunteerMap;
-
         return visits.stream()
-                .map(v -> VisitDataMapper.toDtoWithVolunteer(v, finalMap.get(v.getId())))
+                .map(v -> {
+                    VisitMonthDTO dto = new VisitMonthDTO();
+                    dto.setRoomNumber(v.getRoom().getNumber());
+                    dto.setFloor(v.getRoom().getFloor());
+                    dto.setScheduleDate(v.getScheduleDate());
+                    return dto;
+                })
                 .collect(Collectors.toList());
     }
+
     @Override
     @Transactional
     public VisitTimeDTO endVisitById(UUID visitId) {

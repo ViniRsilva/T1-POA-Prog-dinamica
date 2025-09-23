@@ -58,7 +58,7 @@ CREATE TABLE visits
     id_room          UUID         NOT NULL,
     start_date       TIMESTAMP WITHOUT TIME ZONE,
     end_date         TIMESTAMP WITHOUT TIME ZONE,
-    scheduling_date  TIMESTAMP WITHOUT TIME ZONE NOT NULL,
+    schedule_date  date          NOT NULL,
     status           VARCHAR(255) NOT NULL,
     duration_minutes INTEGER,
     notes            TEXT,

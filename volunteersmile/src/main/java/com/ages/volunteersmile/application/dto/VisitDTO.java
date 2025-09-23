@@ -17,7 +17,7 @@ public class VisitDTO {
     private String volunteerName;
     private LocalDateTime startDate;
     private LocalDateTime endDate;
-    private LocalDateTime schedulingDate;
+    private LocalDate scheduleDate;
     private String status;
     private Integer durationMinutes;
     private Integer totalTime;

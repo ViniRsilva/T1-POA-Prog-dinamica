@@ -32,7 +32,7 @@ public final class VisitDataMapper {
         dto.setRoomNumber(v.getRoom() != null ? v.getRoom().getNumber() : null);
         dto.setStartDate(v.getStartDate());
         dto.setEndDate(v.getEndDate());
-        dto.setSchedulingDate(v.getSchedulingDate());
+        dto.setScheduleDate(v.getScheduleDate());
         dto.setStatus(v.getStatus() != null ? v.getStatus().name() : null);
         dto.setDurationMinutes(v.getDurationMinutes());
         dto.setTotalTime(v.getTotalTime());

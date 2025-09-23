@@ -6,13 +6,14 @@ import java.util.UUID;
 
 import com.ages.volunteersmile.application.dto.CreateVisitDTO;
 import com.ages.volunteersmile.application.dto.VisitDTO;
+import com.ages.volunteersmile.application.dto.VisitMonthDTO;
 import com.ages.volunteersmile.application.dto.VisitTimeDTO;
 
 public interface VisitService {
     VisitDTO createVisit(CreateVisitDTO dto);
     List<VisitDTO> listAll();
     List<VisitDTO> listByDay(LocalDate date);
-    List<VisitDTO> listByMonth(LocalDate anyDateInMonth);
+    List<VisitMonthDTO> listByMonth(LocalDate anyDateInMonth);
     VisitTimeDTO endVisitById(UUID visitId);
     VisitDTO startVisitById(UUID visitId);
 }
