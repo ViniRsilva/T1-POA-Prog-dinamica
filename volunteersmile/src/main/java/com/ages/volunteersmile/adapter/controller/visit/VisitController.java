@@ -2,6 +2,8 @@ package com.ages.volunteersmile.adapter.controller.visit;
 
 import java.net.URI;
 import java.util.List;
+import java.util.UUID;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
