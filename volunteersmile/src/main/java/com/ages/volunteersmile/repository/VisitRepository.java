@@ -22,7 +22,4 @@ public interface VisitRepository extends JpaRepository<Visit, UUID> {
 	List<Object[]> findLastVisitDateByRoomIdsUpTo(@Param("roomIds") List<UUID> roomIds,
 												  @Param("targetDate") LocalDate targetDate);
 
-    List<UserVisit> findByVisitIdIn(List<UUID> visitIds);
-
-    Optional<UserVisit>
 }
