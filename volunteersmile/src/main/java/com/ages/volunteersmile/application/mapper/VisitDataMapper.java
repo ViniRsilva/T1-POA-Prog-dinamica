@@ -18,6 +18,12 @@ public final class VisitDataMapper {
         v.setRoom(room);
         v.setStartDate(dto.getStartDate());
         v.setEndDate(dto.getEndDate());
+        // scheduleDate é o dia selecionado para a marcação (preferir dto.scheduleDate)
+        if (dto.getScheduleDate() != null) {
+            v.setScheduleDate(dto.getScheduleDate());
+        } else if (dto.getStartDate() != null) {
+            v.setScheduleDate(dto.getStartDate().toLocalDate());
+        }
         v.setDurationMinutes(dto.getDurationMinutes());
         v.setTotalTime(dto.getTotalTime());
         v.setNotes(dto.getNotes());

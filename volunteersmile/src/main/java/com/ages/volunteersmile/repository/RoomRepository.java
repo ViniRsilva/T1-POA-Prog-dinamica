@@ -25,10 +25,7 @@ public interface RoomRepository extends JpaRepository<Room, UUID> {
                 + "  SELECT 1 FROM Visit v "
                 + "  WHERE v.room = r "
                 + "    AND v.status = :scheduledStatus "
-                + "    AND ("
-                + "         (v.endDate IS NULL AND v.startDate = :date) "
-                + "      OR (v.endDate IS NOT NULL AND v.startDate <= :date AND v.endDate >= :date)"
-                + "    )"
+                + "    AND v.scheduleDate = :date"
                 + ")")
             List<Room> findAvailableByDate(@Param("date") LocalDate date,
                                     @Param("activeStatus") RoomStatus activeStatus,

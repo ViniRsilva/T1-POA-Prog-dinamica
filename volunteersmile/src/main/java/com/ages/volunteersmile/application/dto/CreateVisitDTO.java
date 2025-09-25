@@ -20,6 +20,9 @@ public class CreateVisitDTO {
     private UUID volunteerId; // voluntário responsável
 
     @NotNull
+    private LocalDate scheduleDate; // dia selecionado para agendamento
+
+    @NotNull
     private LocalDateTime startDate; // data de início agendada
 
     private LocalDateTime endDate; // opcional para visitas de múltiplos dias
