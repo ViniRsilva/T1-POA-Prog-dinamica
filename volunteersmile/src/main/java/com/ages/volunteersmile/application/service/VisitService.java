@@ -16,4 +16,5 @@ public interface VisitService {
     List<VisitMonthDTO> listByMonth(LocalDate anyDateInMonth);
     VisitTimeDTO endVisitById(UUID visitId);
     VisitDTO startVisitById(UUID visitId);
+    VisitDTO getNextVisitByVolunteer(UUID volunteerId);
 }

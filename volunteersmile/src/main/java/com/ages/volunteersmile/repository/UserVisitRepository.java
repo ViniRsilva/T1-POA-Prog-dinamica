@@ -2,6 +2,8 @@ package com.ages.volunteersmile.repository;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.Optional;
+import java.time.LocalDateTime;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -19,4 +21,6 @@ public interface UserVisitRepository extends JpaRepository<UserVisit, UUID> {
     UserVisit findFirstByVisit_Id(UUID visitId);
 
     boolean existsByUser_Id(UUID userId);
+
+    Optional<UserVisit> findFirstByUser_IdAndVisit_StartDateAfterOrderByVisit_StartDateAsc(UUID userId, LocalDateTime now);
 }

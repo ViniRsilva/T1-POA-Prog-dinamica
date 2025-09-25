@@ -2,7 +2,10 @@ package com.ages.volunteersmile.application.service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import com.ages.volunteersmile.application.dto.VisitMonthDTO;
@@ -78,6 +81,20 @@ public class VisitServiceImpl implements VisitService {
         return visits.stream()
                 .map(v -> VisitDataMapper.toDtoWithVolunteer(v, visitVolunteerMap.get(v.getId())))
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    @Transactional
+    public VisitDTO getNextVisitByVolunteer(UUID volunteerId) {
+        User volunteer = volunteerRepository.findById(volunteerId)
+                .orElseThrow(() -> exceptions.notFound("Voluntário não encontrado"));
+
+        UserVisit nextUserVisit = userVisitRepository
+                .findFirstByUser_IdAndVisit_StartDateAfterOrderByVisit_StartDateAsc(
+                        volunteerId, java.time.LocalDateTime.now())
+                .orElseThrow(() -> exceptions.notFound("Nenhuma próxima visita encontrada para o voluntário"));
+
+        return VisitDataMapper.toDtoWithVolunteer(nextUserVisit.getVisit(), volunteer);
     }
 
     @Override
