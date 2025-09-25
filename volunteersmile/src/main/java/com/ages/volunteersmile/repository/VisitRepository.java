@@ -22,4 +22,21 @@ public interface VisitRepository extends JpaRepository<Visit, UUID> {
 	List<Object[]> findLastVisitDateByRoomIdsUpTo(@Param("roomIds") List<UUID> roomIds,
 												  @Param("targetDate") LocalDate targetDate);
 
+	@Query("""
+       SELECT v
+       FROM Visit v
+       WHERE v.scheduleDate >= :start
+         AND v.scheduleDate < :end
+       """)
+	List<Visit> findAllOverlapping(@Param("start") LocalDate start,
+								   @Param("end")   LocalDate end);
+
+
+	@Query("""
+       SELECT v
+       FROM Visit v
+       WHERE v.id = :id
+       """)
+    Visit findVisitById(@Param("id") UUID visitId);
+
 }

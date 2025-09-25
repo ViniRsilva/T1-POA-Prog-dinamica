@@ -18,9 +18,6 @@ public class UpdateRoomDTO {
     @NotNull @Min(1)
     private Integer number;
 
-    @NotNull @Min(0)
-    private Integer difficultyLevel;
-
     @NotNull @Min(1)
     private Integer maxOccupancy;
 

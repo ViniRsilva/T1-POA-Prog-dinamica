@@ -1,6 +1,7 @@
 package com.ages.volunteersmile.config;
 
 import java.io.IOException;
+import java.util.Collections;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -29,14 +30,21 @@ public class JwtFilter extends OncePerRequestFilter {
         String token = null;
         String email = null;
 
-        if (authHeader != null && authHeader.startsWith("Bearer ")) {
-            token = authHeader.substring(7);
-            email = jwtUtil.extractEmail(token);
+        if (authHeader != null) {
+            String header = authHeader.trim();
+            if (header.length() >= 7 && header.regionMatches(true, 0, "Bearer ", 0, 7)) {
+                token = header.substring(7).trim();
+                try {
+                    email = jwtUtil.extractEmail(token);
+                } catch (Exception ignored) {
+                    // ignore, validateToken will fail below
+                }
+            }
         }
 
         if (email != null && jwtUtil.validateToken(token)) {
             UsernamePasswordAuthenticationToken authentication =
-                    new UsernamePasswordAuthenticationToken(email, null, null);
+                    new UsernamePasswordAuthenticationToken(email, null, Collections.emptyList());
             authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
             SecurityContextHolder.getContext().setAuthentication(authentication);
         }

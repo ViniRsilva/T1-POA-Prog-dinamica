@@ -1,6 +1,7 @@
 package com.ages.volunteersmile.application.dto;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 import jakarta.validation.constraints.Min;
@@ -19,12 +20,15 @@ public class CreateVisitDTO {
     private UUID volunteerId; // voluntário responsável
 
     @NotNull
-    private LocalDate startDate; // data de início agendada
+    private LocalDateTime startDate; // data de início agendada
 
-    private LocalDate endDate; // opcional para visitas de múltiplos dias
+    private LocalDateTime endDate; // opcional para visitas de múltiplos dias
 
     @Min(1)
     private Integer durationMinutes; // opcional, calculado posteriormente
+
+    @Min(1)
+    private Integer totalTime;
 
     @Size(max = 5000)
     private String notes;

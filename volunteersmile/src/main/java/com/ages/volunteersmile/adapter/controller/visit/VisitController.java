@@ -1,18 +1,17 @@
 package com.ages.volunteersmile.adapter.controller.visit;
 
 import java.net.URI;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
-import org.springframework.web.bind.annotation.PathVariable;
 
+import org.springframework.web.bind.annotation.*;
+
+import com.ages.volunteersmile.application.dto.VisitMonthDTO;
+import com.ages.volunteersmile.application.dto.VisitTimeDTO;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
 import com.ages.volunteersmile.application.dto.CreateVisitDTO;
 import com.ages.volunteersmile.application.dto.VisitDTO;
@@ -65,5 +64,31 @@ public class VisitController {
     public ResponseEntity<VisitDTO> getNextVisitByVolunteer(@PathVariable("volunteerId") UUID volunteerId) {
         VisitDTO nextVisit = visitService.getNextVisitByVolunteer(volunteerId);
         return ResponseEntity.ok(nextVisit);
+    }
+
+	@Operation(summary = "Lista visitas que ocorrem no dia informado")
+	@ApiResponses({ @ApiResponse(responseCode = "200", description = "Lista retornada") })
+	@GetMapping(value = "/day", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<List<VisitDTO>> listByDay(@RequestParam("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
+		return ResponseEntity.ok(visitService.listByDay(date));
+	}
+
+	@Operation(summary = "Lista visitas que ocorrem no mês da data informada")
+	@ApiResponses({ @ApiResponse(responseCode = "200", description = "Lista retornada") })
+	@GetMapping(value = "/month", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<List<VisitMonthDTO>> listByMonth(@RequestParam("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dateInMonth) {
+		return ResponseEntity.ok(visitService.listByMonth(dateInMonth));
+	}
+
+    @Operation(summary = "Iniciar registro de visita", description = "Inicia o registro de tempo de visita do voluntário")
+    @PostMapping("/{id}/start")
+    public ResponseEntity<VisitDTO> startVisit(@PathVariable UUID id) {
+        return ResponseEntity.ok(visitService.startVisitById(id));
+    }
+
+    @Operation(summary = "Finalizar registro de visita", description = "Finaliza o registro de tempo de visita e salva a duração")
+    @PostMapping("/{id}/end")
+    public ResponseEntity<VisitTimeDTO> endVisit(@PathVariable UUID id) {
+        return ResponseEntity.ok(visitService.endVisitById(id));
     }
 }

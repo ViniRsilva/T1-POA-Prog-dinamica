@@ -35,13 +35,13 @@ public class Visit {
     private Room room;
 
     @Column(name = "start_date", nullable = false)
-    private LocalDate startDate;
+    private LocalDateTime startDate;
 
     @Column(name = "end_date")
-    private LocalDate endDate;
+    private LocalDateTime endDate;
 
-    @Column(name = "scheduling_date", nullable = false)
-    private LocalDateTime schedulingDate = LocalDateTime.now();
+    @Column(name = "schedule_date", nullable = false)
+    private LocalDate scheduleDate = LocalDate.now();
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
@@ -49,6 +49,9 @@ public class Visit {
 
     @Column(name = "duration_minutes")
     private Integer durationMinutes;
+
+    @Column(name = "total_time")
+    private Integer totalTime;
 
     @Column(columnDefinition = "TEXT")
     private String notes;
