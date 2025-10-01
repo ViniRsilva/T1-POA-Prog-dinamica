@@ -1,17 +1,23 @@
 package com.ages.volunteersmile.application.service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
+import com.ages.volunteersmile.application.dto.*;
+import com.ages.volunteersmile.application.mapper.VisitDataMapper;
+import com.ages.volunteersmile.domain.global.model.User;
+import com.ages.volunteersmile.domain.global.model.UserVisit;
+import com.ages.volunteersmile.domain.global.model.Visit;
+import com.ages.volunteersmile.repository.UserVisitRepository;
+import com.ages.volunteersmile.repository.VisitRepository;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.ages.volunteersmile.application.dto.CreateVolunteerDTO;
-import com.ages.volunteersmile.application.dto.UpdatePasswordDTO;
-import com.ages.volunteersmile.application.dto.UpdateVolunteerDTO;
-import com.ages.volunteersmile.application.dto.VolunteerDTO;
 import com.ages.volunteersmile.application.mapper.VolunteerDataMapper;
 import com.ages.volunteersmile.domain.adapters.ExceptionsAdapter;
 import com.ages.volunteersmile.domain.volunteer.model.Volunteer;
@@ -22,15 +28,17 @@ import com.ages.volunteersmile.repository.VolunteerRepository;
 public class VolunteerApplicationServiceImpl implements VolunteerApplicationService {
 
     private final VolunteerRepository repository;
+    private final UserVisitRepository userVisitRepository;
     private final BCryptPasswordEncoder passwordEncoder;
     private final ExceptionsAdapter exceptions;
     private final VolunteerDataMapper volunteerDataMapper;
 
-    public VolunteerApplicationServiceImpl(VolunteerRepository repository,
+    public VolunteerApplicationServiceImpl(VolunteerRepository repository, UserVisitRepository userVisitRepository,
                                            BCryptPasswordEncoder passwordEncoder,
                                            ExceptionsAdapter exceptions,
                                            VolunteerDataMapper volunteerDataMapper) {
         this.repository = repository;
+        this.userVisitRepository = userVisitRepository;
         this.passwordEncoder = passwordEncoder;
         this.exceptions = exceptions;
         this.volunteerDataMapper = volunteerDataMapper;
@@ -62,6 +70,20 @@ public class VolunteerApplicationServiceImpl implements VolunteerApplicationServ
     Volunteer volunteer = repository.findById(id)
                 .orElseThrow(() -> exceptions.notFound("Voluntário não encontrado"));
         return volunteerDataMapper.mapFrom(volunteer);
+    }
+
+    @Override
+    public VolunteerProfileDTO getProfilebyID(UUID id) {
+
+        Volunteer volunteer = repository.findById(id).orElseThrow(() -> exceptions.notFound("Voluntário não encontrado"));
+
+        List<Visit> visits = userVisitRepository.findByUserId(volunteer.getId())
+                .stream()
+                .map(UserVisit::getVisit)
+                .toList();
+
+        return volunteerDataMapper.mapToVolunteerProfileDTO(volunteer, visits);
+
     }
 
     @Override

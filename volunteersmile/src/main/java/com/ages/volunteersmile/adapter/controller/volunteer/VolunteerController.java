@@ -3,6 +3,7 @@ package com.ages.volunteersmile.adapter.controller.volunteer;
 import java.util.List;
 import java.util.UUID;
 
+import com.ages.volunteersmile.application.dto.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,10 +16,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ages.volunteersmile.application.dto.CreateVolunteerDTO;
-import com.ages.volunteersmile.application.dto.UpdatePasswordDTO;
-import com.ages.volunteersmile.application.dto.UpdateVolunteerDTO;
-import com.ages.volunteersmile.application.dto.VolunteerDTO;
 import com.ages.volunteersmile.application.service.VolunteerApplicationService;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -57,6 +54,16 @@ public class VolunteerController {
     @GetMapping("/{id}")
     public ResponseEntity<VolunteerDTO> getVolunteerById(@PathVariable UUID id){
         return ResponseEntity.ok(volunteerService.findById(id));
+    }
+
+    @Operation(summary = "Buscar voluntário por ID", description = "Retorna um voluntário pelo seu ID")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Voluntário encontrado"),
+            @ApiResponse(responseCode = "404", description = "Voluntário não encontrado")
+    })
+    @GetMapping("/profile/{id}")
+    public ResponseEntity<VolunteerProfileDTO> getVolunteerProfileById(@PathVariable UUID id){
+        return ResponseEntity.ok(volunteerService.getProfilebyID(id));
     }
 
     @Operation(summary = "Buscar voluntário por email", description = "Retorna um voluntário pelo seu email")
