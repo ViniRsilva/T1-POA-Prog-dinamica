@@ -56,7 +56,7 @@ public class VolunteerController {
         return ResponseEntity.ok(volunteerService.findById(id));
     }
 
-    @Operation(summary = "Buscar voluntário por ID", description = "Retorna um voluntário pelo seu ID")
+    @Operation(summary = "Buscar perfil de voluntario por ID", description = "Retorna o perfil do voluntario pelo seu ID")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Voluntário encontrado"),
             @ApiResponse(responseCode = "404", description = "Voluntário não encontrado")
