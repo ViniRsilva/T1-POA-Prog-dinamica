@@ -4,16 +4,16 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
-import com.ages.volunteersmile.application.dto.CreateVisitDTO;
-import com.ages.volunteersmile.application.dto.VisitDTO;
-import com.ages.volunteersmile.application.dto.VisitMonthDTO;
-import com.ages.volunteersmile.application.dto.VisitTimeDTO;
+import com.ages.volunteersmile.application.dto.*;
 
 public interface VisitService {
     VisitDTO createVisit(CreateVisitDTO dto);
     List<VisitDTO> listAll();
     List<VisitDTO> listByDay(LocalDate date);
     List<VisitMonthDTO> listByMonth(LocalDate anyDateInMonth);
+    FeedbackDTO addVolunteerFeedback(UserVisitFeedbackDTO dto);
+    FeedbackDTO getLastVolunteerFeedback(UUID roomId);
+    List<FeedbackDTO> getAllFeedbacksByRoom(UUID roomId);
     VisitTimeDTO endVisitById(UUID visitId);
     VisitDTO startVisitById(UUID visitId);
     VisitDTO getNextVisitByVolunteer(UUID volunteerId);
