@@ -5,7 +5,6 @@ import com.ages.volunteersmile.application.dto.UserVisitFeedbackDTO;
 import com.ages.volunteersmile.application.dto.FeedbackDTO;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.ResponseEntity;
-import org.springframework.http.MediaType;
 import jakarta.validation.Valid;
 import java.util.UUID;
 import java.util.List;
