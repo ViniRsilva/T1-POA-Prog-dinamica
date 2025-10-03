@@ -2,14 +2,12 @@ package com.ages.volunteersmile.application.service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import com.ages.volunteersmile.application.dto.VisitMonthDTO;
 import com.ages.volunteersmile.application.dto.VisitTimeDTO;
+import com.ages.volunteersmile.domain.volunteer.model.Volunteer;
 import org.springframework.stereotype.Service;
 
 import com.ages.volunteersmile.application.dto.CreateVisitDTO;
@@ -146,6 +144,11 @@ public class VisitServiceImpl implements VisitService {
     @Transactional
     public VisitTimeDTO endVisitById(UUID visitId) {
         Visit visit = visitRepository.findVisitById(visitId);
+        List<UUID> uv = userVisitRepository.findAllUserIdsByVisitId(visitId);
+        List<Volunteer> volunteer = uv.stream()
+                .map(volunteerRepository::findById)
+                .flatMap(Optional::stream)
+                .toList();
 
         LocalDateTime endTime = LocalDateTime.now();
         visit.setEndDate(endTime);
@@ -153,6 +156,8 @@ public class VisitServiceImpl implements VisitService {
         Integer durationMinutes = java.time.Duration.between(visit.getStartDate(), endTime).toMinutesPart();
         visit.setDurationMinutes(durationMinutes);
 
+        volunteer.forEach(v -> v.setTotaltime(v.getTotaltime() + durationMinutes));
+        volunteerRepository.saveAll(volunteer);
         visitRepository.save(visit);
 
         String formatted = String.format("%dh %02dmin", durationMinutes / 60, durationMinutes % 60);

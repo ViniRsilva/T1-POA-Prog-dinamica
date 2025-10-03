@@ -28,8 +28,9 @@ public class VolunteerDataMapper {
         dto.setDescription(volunteer.getDescriptionVoluntary());
         mapStatusToDto(volunteer, dto);
         mapRoomAccessToDto(volunteer, dto);
-    dto.setRole(volunteer.getAppRole());
+        dto.setRole(volunteer.getAppRole());
         dto.setCreatedAt(volunteer.getCreatedAt());
+        dto.setTotaltime(volunteer.getTotaltime());
         return dto;
     }
 
