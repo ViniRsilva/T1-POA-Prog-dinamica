@@ -13,7 +13,6 @@ import lombok.Setter;
 @Setter
 public class VolunteerDTO extends UserDTO {
 
-   // private String role;
     private String email;
     private String name;
     private String phoneNumber;
