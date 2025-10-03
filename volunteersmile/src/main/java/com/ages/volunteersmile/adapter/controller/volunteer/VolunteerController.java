@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.UUID;
 
 import com.ages.volunteersmile.application.dto.*;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -56,15 +58,19 @@ public class VolunteerController {
         return ResponseEntity.ok(volunteerService.findById(id));
     }
 
-    @Operation(summary = "Buscar perfil de voluntario por ID", description = "Retorna o perfil do voluntario pelo seu ID")
-    @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Voluntário encontrado"),
-            @ApiResponse(responseCode = "404", description = "Voluntário não encontrado")
+    @Operation(summary = "Buscar perfil de voluntário por ID", description = "Retorna o perfil do voluntário pelo seu ID")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Voluntário encontrado",
+            content = @Content(mediaType = "application/json",
+            schema = @Schema(implementation = VolunteerProfileDTO.class))),
+            @ApiResponse(responseCode = "404", description = "Voluntário não encontrado",
+            content = @Content(mediaType = "application/json"))
     })
     @GetMapping("/profile/{id}")
-    public ResponseEntity<VolunteerProfileDTO> getVolunteerProfileById(@PathVariable UUID id){
+    public ResponseEntity<VolunteerProfileDTO> getVolunteerProfileById(@PathVariable UUID id) {
         return ResponseEntity.ok(volunteerService.getProfilebyID(id));
     }
+
 
     @Operation(summary = "Buscar voluntário por email", description = "Retorna um voluntário pelo seu email")
     @ApiResponses({
