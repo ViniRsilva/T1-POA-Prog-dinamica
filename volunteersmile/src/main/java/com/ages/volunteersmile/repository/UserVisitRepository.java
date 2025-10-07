@@ -26,5 +26,10 @@ public interface UserVisitRepository extends JpaRepository<UserVisit, UUID> {
     @Query("SELECT uv.user.id FROM UserVisit uv WHERE uv.visit.id = :visitId")
     List<UUID> findAllUserIdsByVisitId(@Param("visitId") UUID visitId);
 
+    UserVisit findTopByVisit_Room_IdAndVolunteerFeedbackIsNotNullOrderByVisit_StartDateDesc(UUID roomId);
+
+    List<UserVisit> findAllByVisit_Room_IdAndVolunteerFeedbackIsNotNull(UUID roomId);
+
+
     Optional<UserVisit> findFirstByUser_IdAndVisit_StartDateAfterOrderByVisit_StartDateAsc(UUID userId, LocalDateTime now);
 }

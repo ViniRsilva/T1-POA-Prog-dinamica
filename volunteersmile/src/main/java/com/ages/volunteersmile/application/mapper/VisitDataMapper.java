@@ -4,9 +4,11 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import com.ages.volunteersmile.application.dto.CreateVisitDTO;
+import com.ages.volunteersmile.application.dto.FeedbackDTO;
 import com.ages.volunteersmile.application.dto.VisitDTO;
 import com.ages.volunteersmile.domain.global.model.Room;
 import com.ages.volunteersmile.domain.global.model.User;
+import com.ages.volunteersmile.domain.global.model.UserVisit;
 import com.ages.volunteersmile.domain.global.model.Visit;
 
 public final class VisitDataMapper {
@@ -55,5 +57,16 @@ public final class VisitDataMapper {
 
     public static List<VisitDTO> toDtos(List<Visit> visits) {
         return visits.stream().map(VisitDataMapper::toDto).collect(Collectors.toList());
+    }
+
+    public static FeedbackDTO toFeedbackDto(UserVisit userVisit) {
+        FeedbackDTO dto = new FeedbackDTO();
+        dto.setId(userVisit.getId().toString());
+        dto.setUserName(userVisit.getUser().getName());
+        dto.setDate(userVisit.getVisit().getStartDate() != null ? userVisit.getVisit().getStartDate().toString() : null);
+        dto.setFeedback(userVisit.getVolunteerFeedback());
+        dto.setFloor(userVisit.getVisit().getRoom().getFloor());
+        dto.setRoomNumber(userVisit.getVisit().getRoom().getNumber());
+        return dto;
     }
 }
