@@ -11,7 +11,7 @@ public interface VisitService {
     List<VisitDTO> listAll();
     List<VisitDTO> listByDay(LocalDate date);
     List<VisitMonthDTO> listByMonth(LocalDate anyDateInMonth);
-    FeedbackDTO addVolunteerFeedback(UserFeedbackDTO dto);
+    FeedbackDTO addVolunteerFeedback(UserVisitFeedbackDTO dto);
     FeedbackDTO getLastVolunteerFeedback(UUID roomId);
     List<FeedbackDTO> getAllFeedbacksByRoom(UUID roomId);
     VisitTimeDTO endVisitById(UUID visitId);
