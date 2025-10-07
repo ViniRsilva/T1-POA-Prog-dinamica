@@ -170,11 +170,9 @@ public class VisitServiceImpl implements VisitService {
     }
 
     @Override
-    public FeedbackDTO addVolunteerFeedback(UserFeedbackDTO dto) {
-        UserVisit userVisit = userVisitRepository.findTopByUser_IdOrderByVisit_StartDateDesc(dto.getUserId());
-        if (userVisit == null) {
-            throw exceptions.notFound("UserVisit não encontrado para o usuário");
-        }
+    public FeedbackDTO addVolunteerFeedback(UserVisitFeedbackDTO dto) {
+        UserVisit userVisit = userVisitRepository.findById(dto.getUserVisitId())
+            .orElseThrow(() -> exceptions.notFound("UserVisit não encontrado"));
         userVisit.setVolunteerFeedback(dto.getFeedback());
         userVisitRepository.save(userVisit);
         return VisitDataMapper.toFeedbackDto(userVisit);
@@ -184,7 +182,7 @@ public class VisitServiceImpl implements VisitService {
     public FeedbackDTO getLastVolunteerFeedback(UUID roomId) {
         UserVisit userVisit = userVisitRepository.findTopByVisit_Room_IdAndVolunteerFeedbackIsNotNullOrderByVisit_StartDateDesc(roomId);
         if (userVisit == null) {
-            throw exceptions.notFound("UserVisit não encontrado para o usuário");
+            return null;
         }
         return VisitDataMapper.toFeedbackDto(userVisit);
     }
