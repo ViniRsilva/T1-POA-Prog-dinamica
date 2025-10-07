@@ -4,6 +4,8 @@ import java.net.URI;
 import java.util.List;
 import java.util.UUID;
 
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -81,7 +83,16 @@ public class RoomController {
         return ResponseEntity.noContent().build();
     }
 
-
+    @Operation(
+            summary = "Listar rooms com paginação, ordenação e filtros opcionais",
+            description = "Retorna uma página de rooms, permitindo filtrar por andar e prioridade, e ordenar por qualquer campo",
+            responses = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "Página de rooms retornada com sucesso"
+                    )
+            }
+    )
     @GetMapping("/list")
     public Page<RoomDTO> listarRooms(
             @RequestParam(defaultValue = "0") int page,

@@ -163,21 +163,8 @@ public class RoomServiceImpl implements RoomService {
             return cb.and(predicates.toArray(new Predicate[0]));
         };
 
-        Page<Room> page_ = roomRepository.findAll(spec, pageable);
+        Page<Room> response = roomRepository.findAll(spec, pageable);
 
-        List<RoomDTO> sortedList;
-
-        if (sortBy.equalsIgnoreCase("priority")) {
-            sortedList = page_.getContent().stream()
-                    .sorted(Comparator.comparingInt(r -> r.getPriority().getLevel()))
-                    .map(RoomDataMapper::toResponse)
-                    .toList();
-        } else {
-            sortedList = page_.getContent().stream()
-                    .map(RoomDataMapper::toResponse)
-                    .toList();
-        }
-
-        return new PageImpl<>(sortedList, pageable, page_.getTotalElements());
+        return response.map(RoomDataMapper::toResponse);
     }
 }

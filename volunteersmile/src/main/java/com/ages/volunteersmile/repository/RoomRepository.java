@@ -5,6 +5,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import com.ages.volunteersmile.application.Enum.RoomPriority;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
@@ -31,5 +34,20 @@ public interface RoomRepository extends JpaRepository<Room, UUID>, JpaSpecificat
             List<Room> findAvailableByDate(@Param("date") LocalDate date,
                                     @Param("activeStatus") RoomStatus activeStatus,
                                     @Param("scheduledStatus") Visit.VisitStatus scheduledStatus);
+
+
+    @Query("SELECT r FROM Room r " +
+            "WHERE (:floor IS NULL OR r.floor = :floor) " +
+            "AND (:priority IS NULL OR r.priority = :priority) " +
+            "ORDER BY CASE r.priority " +
+            "WHEN 'LOW' THEN 1 " +
+            "WHEN 'MEDIUM' THEN 2 " +
+            "WHEN 'HIGH' THEN 3 END ASC")
+    Page<Room> findAllByFloorAndPriorityOrderByPriority(
+            @Param("floor") Integer floor,
+            @Param("priority") RoomPriority priority,
+            Pageable pageable
+    );
+
 }
 
