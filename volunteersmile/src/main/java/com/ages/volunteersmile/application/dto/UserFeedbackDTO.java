@@ -7,8 +7,7 @@ import java.util.UUID;
 
 @Getter
 @Setter
-public class UserVisitFeedbackDTO {
-    private UUID userVisitId;
+public class UserFeedbackDTO {
+    private UUID userId;
     private String feedback;
 }
-

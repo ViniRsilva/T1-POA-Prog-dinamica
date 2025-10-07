@@ -27,4 +27,7 @@ public interface UserVisitRepository extends JpaRepository<UserVisit, UUID> {
     List<UserVisit> findAllByVisit_Room_IdAndVolunteerFeedbackIsNotNull(UUID roomId);
 
     Optional<UserVisit> findFirstByUser_IdAndVisit_StartDateAfterOrderByVisit_StartDateAsc(UUID userId, LocalDateTime now);
+
+    // retorna o UserVisit mais recente de um usuário
+    UserVisit findTopByUser_IdOrderByVisit_StartDateDesc(UUID userId);
 }
