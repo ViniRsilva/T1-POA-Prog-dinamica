@@ -25,7 +25,6 @@ public final class VisitDataMapper {
             v.setScheduleDate(dto.getStartDate().toLocalDate());
         }
         v.setDurationMinutes(dto.getDurationMinutes());
-        v.setTotalTime(dto.getTotalTime());
         v.setNotes(dto.getNotes());
         v.setStatus(Visit.VisitStatus.SCHEDULED);
         return v;
@@ -41,7 +40,6 @@ public final class VisitDataMapper {
         dto.setScheduleDate(v.getScheduleDate());
         dto.setStatus(v.getStatus() != null ? v.getStatus().name() : null);
         dto.setDurationMinutes(v.getDurationMinutes());
-        dto.setTotalTime(v.getTotalTime());
         dto.setNotes(v.getNotes());
         return dto;
     }

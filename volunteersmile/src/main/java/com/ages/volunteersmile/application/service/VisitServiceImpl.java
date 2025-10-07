@@ -147,7 +147,13 @@ public class VisitServiceImpl implements VisitService {
     @Override
     @Transactional
     public VisitTimeDTO endVisitById(UUID visitId) {
+
         Visit visit = visitRepository.findVisitById(visitId);
+        if(visit.getEndDate() != null){
+
+            throw exceptions.conflict("visita ja finalizada");
+
+        }
         List<UUID> uv = userVisitRepository.findAllUserIdsByVisitId(visitId);
         List<Volunteer> volunteer = uv.stream()
                 .map(volunteerRepository::findById)
