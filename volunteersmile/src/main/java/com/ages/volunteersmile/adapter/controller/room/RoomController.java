@@ -6,15 +6,7 @@ import java.util.UUID;
 
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.ages.volunteersmile.application.dto.CreateRoomDTO;
 import com.ages.volunteersmile.application.dto.RoomDTO;
@@ -25,6 +17,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
 
 @RestController
 @RequestMapping("/rooms")
@@ -32,9 +25,11 @@ import jakarta.validation.Valid;
 public class RoomController {
 
     private final RoomService service;
+    private final RoomService roomService;
 
-    public RoomController(RoomService service) {
+    public RoomController(RoomService service, RoomService roomService) {
         this.service = service;
+        this.roomService = roomService;
     }
 
     @Operation(summary = "Cria um novo quarto")
@@ -84,5 +79,18 @@ public class RoomController {
     public ResponseEntity<Void> delete(@PathVariable("id") UUID id) {
         service.deleteRoom(id);
         return ResponseEntity.noContent().build();
+    }
+
+
+    @GetMapping("/list")
+    public Page<RoomDTO> listarRooms(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "id") String sortBy,
+            @RequestParam(defaultValue = "asc") String direction,
+            @RequestParam(required = false) Integer floor,
+            @RequestParam(required = false) String priority
+    ) {
+        return roomService.listPage(page, size, sortBy,direction,floor, priority);
     }
 }

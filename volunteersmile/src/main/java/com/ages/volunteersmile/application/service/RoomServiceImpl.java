@@ -7,7 +7,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Collectors;
+import java.util.ArrayList;
 
+import org.springframework.data.domain.*;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -28,6 +31,7 @@ import com.ages.volunteersmile.repository.VisitRepository;
 import com.ages.volunteersmile.repository.VolunteerRepository;
 
 import jakarta.transaction.Transactional;
+import jakarta.persistence.criteria.Predicate;
 
 @Service
 public class RoomServiceImpl implements RoomService {
@@ -141,5 +145,39 @@ public class RoomServiceImpl implements RoomService {
                     return RoomDataMapper.toAvailableResponse(room, daysSince);
                 })
                 .collect(Collectors.toList());
+    }
+    @Override
+    public Page<RoomDTO> listPage(int page, int size, String sortBy, String direction, Integer floor, String priority) {
+        Sort sort = direction.equalsIgnoreCase("desc") ? Sort.by(sortBy).descending() : Sort.by(sortBy).ascending();
+
+        Pageable pageable = PageRequest.of(page, size, sort);
+
+        Specification<Room> spec = (root, query, cb) -> {
+            List<Predicate> predicates = new ArrayList<>();
+            if (floor != null) {
+                predicates.add(cb.equal(root.get("floor"), floor));
+            }
+            if (priority != null) {
+                predicates.add(cb.equal(root.get("priority"), priority));
+            }
+            return cb.and(predicates.toArray(new Predicate[0]));
+        };
+
+        Page<Room> page_ = roomRepository.findAll(spec, pageable);
+
+        List<RoomDTO> sortedList;
+
+        if (sortBy.equalsIgnoreCase("priority")) {
+            sortedList = page_.getContent().stream()
+                    .sorted(Comparator.comparingInt(r -> r.getPriority().getLevel()))
+                    .map(RoomDataMapper::toResponse)
+                    .toList();
+        } else {
+            sortedList = page_.getContent().stream()
+                    .map(RoomDataMapper::toResponse)
+                    .toList();
+        }
+
+        return new PageImpl<>(sortedList, pageable, page_.getTotalElements());
     }
 }
