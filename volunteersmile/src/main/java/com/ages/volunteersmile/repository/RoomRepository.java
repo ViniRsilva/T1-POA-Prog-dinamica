@@ -37,17 +37,11 @@ public interface RoomRepository extends JpaRepository<Room, UUID>, JpaSpecificat
 
 
     @Query("SELECT r FROM Room r " +
-            "WHERE (:floor IS NULL OR r.floor = :floor) " +
-            "AND (:priority IS NULL OR r.priority = :priority) " +
             "ORDER BY CASE r.priority " +
             "WHEN 'LOW' THEN 1 " +
             "WHEN 'MEDIUM' THEN 2 " +
             "WHEN 'HIGH' THEN 3 END ASC")
-    Page<Room> findAllByFloorAndPriorityOrderByPriority(
-            @Param("floor") Integer floor,
-            @Param("priority") RoomPriority priority,
-            Pageable pageable
-    );
+    Page<Room> findAllOrderByPriority(Pageable pageable);
 
 }
 

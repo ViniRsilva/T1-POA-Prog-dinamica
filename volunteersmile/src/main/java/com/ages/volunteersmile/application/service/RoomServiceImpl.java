@@ -148,18 +148,38 @@ public class RoomServiceImpl implements RoomService {
     }
     @Override
     public Page<RoomDTO> listPage(int page, int size, String sortBy, String direction, Integer floor, String priority) {
-        Sort sort = direction.equalsIgnoreCase("desc") ? Sort.by(sortBy).descending() : Sort.by(sortBy).ascending();
 
-        Pageable pageable = PageRequest.of(page, size, sort);
+        Pageable pageable = PageRequest.of(
+                page,
+                size,
+                ("priority".equalsIgnoreCase(sortBy))
+                        ? Sort.unsorted()
+                        : direction.equalsIgnoreCase("desc")
+                        ? Sort.by(sortBy).descending()
+                        : Sort.by(sortBy).ascending()
+        );
 
         Specification<Room> spec = (root, query, cb) -> {
             List<Predicate> predicates = new ArrayList<>();
-            if (floor != null) {
+
+            if (floor != null)
                 predicates.add(cb.equal(root.get("floor"), floor));
-            }
-            if (priority != null) {
+
+            if (priority != null)
                 predicates.add(cb.equal(root.get("priority"), priority));
+
+
+            if ("priority".equalsIgnoreCase(sortBy)) {
+                var caseExpr = cb.selectCase(root.get("priority"))
+                        .when(RoomPriority.HIGH, 1)
+                        .when(RoomPriority.MEDIUM, 2)
+                        .when(RoomPriority.LOW, 3)
+                        .otherwise(4);
+
+                query.orderBy(direction.equalsIgnoreCase("desc") ? cb.desc(caseExpr) : cb.asc(caseExpr));
+
             }
+
             return cb.and(predicates.toArray(new Predicate[0]));
         };
 
