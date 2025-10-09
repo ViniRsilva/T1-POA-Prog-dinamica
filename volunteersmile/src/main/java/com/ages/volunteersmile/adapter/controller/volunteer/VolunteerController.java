@@ -4,16 +4,10 @@ import java.util.List;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.ages.volunteersmile.application.dto.CreateVolunteerDTO;
 import com.ages.volunteersmile.application.dto.UpdatePasswordDTO;
@@ -24,6 +18,8 @@ import com.ages.volunteersmile.application.service.VolunteerApplicationService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.Valid;
 
 @RestController
@@ -76,6 +72,20 @@ public class VolunteerController {
     @GetMapping
     public ResponseEntity<List<VolunteerDTO>> getAllVolunteers() {
         return ResponseEntity.ok(volunteerService.findAll());
+    }
+
+    @Operation(summary = "Listar voluntários paginados", description = "Retorna uma lista paginada de voluntários com controle de página e tamanho")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Lista paginada de voluntários retornada com sucesso")
+    })
+    @GetMapping("/paginated")
+    public ResponseEntity<Page<VolunteerDTO>> getAllVolunteersPaginated(
+            @Parameter(description = "Número da página (começa em 0)", schema = @Schema(type = "integer", defaultValue = "0", minimum = "0"))
+            @RequestParam(defaultValue = "0") int pageNum,
+            @Parameter(description = "Quantidade de itens por página", schema = @Schema(type = "integer", defaultValue = "10", minimum = "1", maximum = "100"))
+            @RequestParam(defaultValue = "10") int pageSize) {
+        Page<VolunteerDTO> volunteers = volunteerService.findAllPaginated(pageNum, pageSize);
+        return ResponseEntity.ok(volunteers);
     }
 
     @Operation(summary = "Atualizar voluntário", description = "Atualiza um voluntário existente pelo seu ID")

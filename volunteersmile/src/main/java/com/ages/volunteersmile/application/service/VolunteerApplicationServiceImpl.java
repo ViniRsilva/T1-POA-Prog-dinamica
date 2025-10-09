@@ -1,9 +1,12 @@
 package com.ages.volunteersmile.application.service;
 
+import org.springframework.data.domain.Pageable;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -67,6 +70,12 @@ public class VolunteerApplicationServiceImpl implements VolunteerApplicationServ
     @Override
     public List<VolunteerDTO> findAll() {
         return volunteerDataMapper.mapFrom(repository.findAll());
+    }
+
+    @Override
+    public Page<VolunteerDTO> findAllPaginated(int pageNum, int pageSize){
+        Pageable pageable = PageRequest.of(pageNum, pageSize);
+        return volunteerDataMapper.mapFrom(repository.findAll(pageable)) ;
     }
 
     @Override

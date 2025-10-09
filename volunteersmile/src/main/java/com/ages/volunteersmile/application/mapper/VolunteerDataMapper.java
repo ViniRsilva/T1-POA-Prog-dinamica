@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 
 import com.ages.volunteersmile.application.Enum.UserStatus;
@@ -85,5 +86,9 @@ public class VolunteerDataMapper {
         if (newValue != null && !Objects.equals(newValue, currentValue)) {
             setter.accept(newValue);
         }
+    }
+
+    public Page<VolunteerDTO> mapFrom(Page<Volunteer> all) {
+        return all.map(this::mapFrom);
     }
 }
