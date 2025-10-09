@@ -5,7 +5,6 @@ import java.time.LocalDateTime;
 
 import com.ages.volunteersmile.application.Enum.UserStatus;
 
-import jakarta.persistence.Transient;
 import lombok.Getter;
 import lombok.Setter;
 
