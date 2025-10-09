@@ -27,6 +27,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional(readOnly = true)
@@ -107,24 +108,10 @@ public class VolunteerApplicationServiceImpl implements VolunteerApplicationServ
                 .map(UserVisit::getVisit)
                 .toList();
 
-        List<Boolean> hasFeedback = new ArrayList<>();
+        List<Boolean> hasFeedback = visits.stream()
+                .map(visit -> userVisitRepository.existsWithFeedback(visit.getId(), volunteer.getId()))
+                .collect(Collectors.toList());
 
-        for(Visit visit : visits){
-
-            if(userVisitRepository.existsWithFeedback(visit.getId(),volunteer.getId())){
-
-                hasFeedback.add(true);
-
-            }
-            else {
-
-                hasFeedback.add(false);
-
-            }
-
-
-
-        }
 
         return volunteerDataMapper.mapToVolunteerProfileDTO(volunteer, visits, hasFeedback);
 
