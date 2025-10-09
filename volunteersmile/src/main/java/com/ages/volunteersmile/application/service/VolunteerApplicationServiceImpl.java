@@ -24,6 +24,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -106,7 +107,26 @@ public class VolunteerApplicationServiceImpl implements VolunteerApplicationServ
                 .map(UserVisit::getVisit)
                 .toList();
 
-        return volunteerDataMapper.mapToVolunteerProfileDTO(volunteer, visits);
+        List<Boolean> hasFeedback = new ArrayList<>();
+
+        for(Visit visit : visits){
+
+            if(userVisitRepository.existsWithFeedback(visit.getId(),volunteer.getId())){
+
+                hasFeedback.add(true);
+
+            }
+            else {
+
+                hasFeedback.add(false);
+
+            }
+
+
+
+        }
+
+        return volunteerDataMapper.mapToVolunteerProfileDTO(volunteer, visits, hasFeedback);
 
     }
 

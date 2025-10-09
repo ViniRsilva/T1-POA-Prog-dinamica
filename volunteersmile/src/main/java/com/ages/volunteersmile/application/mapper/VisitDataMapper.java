@@ -11,6 +11,7 @@ import com.ages.volunteersmile.application.dto.VisitWithHasFeedbackDTO;
 import com.ages.volunteersmile.domain.global.model.Room;
 import com.ages.volunteersmile.domain.global.model.User;
 import com.ages.volunteersmile.domain.global.model.Visit;
+import com.ages.volunteersmile.domain.volunteer.model.Volunteer;
 import org.springframework.data.util.StreamUtils;
 
 public final class VisitDataMapper {
@@ -63,10 +64,11 @@ public final class VisitDataMapper {
         return visits.stream().map(VisitDataMapper::toDto).collect(Collectors.toList());
     }
 
-    public static VisitWithHasFeedbackDTO  toDtoWithHasFeedback(Visit v,boolean hasFeedback) {
+    public static VisitWithHasFeedbackDTO  toDtoWithHasFeedback(Visit v, boolean hasFeedback, Volunteer volunteer) {
 
         VisitWithHasFeedbackDTO dto = new VisitWithHasFeedbackDTO();
         dto.setId(v.getId());
+        dto.setVolunteerId(volunteer.getId());
         dto.setRoomId(v.getRoom() != null ? v.getRoom().getId() : null);
         dto.setRoomNumber(v.getRoom() != null ? v.getRoom().getNumber() : null);
         dto.setStartDate(v.getStartDate());
@@ -80,13 +82,18 @@ public final class VisitDataMapper {
         return dto;
     }
 
-    public  static  List<VisitWithHasFeedbackDTO> toDtoWithHasFeedback(List<Visit> visits,List<Boolean> has) {
+    public  static  List<VisitWithHasFeedbackDTO> toListOfvisitWithHasFeedbackDTOList(List<Visit> visits,List<Boolean> has,Volunteer volunteer) {
 
-        return  List<VisitWithHasFeedbackDTO> dtos = IntStream.range(0, visits.size())
-                .mapToObj(i -> toDtoWithHasFeedback(visits.get(i), has.get(i)))
-                .collect(Collectors.toList());
+        List<VisitWithHasFeedbackDTO> dtos = new ArrayList<>();
 
 
+        for(int i = 0; i < has.size(); i++) {
+
+            dtos.add(toDtoWithHasFeedback(visits.get(i), has.get(i),volunteer));
+
+        }
+
+        return dtos;
 
     }
 }

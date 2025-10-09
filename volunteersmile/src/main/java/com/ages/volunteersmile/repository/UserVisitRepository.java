@@ -25,4 +25,13 @@ public interface UserVisitRepository extends JpaRepository<UserVisit, UUID> {
     boolean existsByUser_Id(UUID userId);
 
     Optional<UserVisit> findFirstByUser_IdAndVisit_StartDateAfterOrderByVisit_StartDateAsc(UUID userId, LocalDateTime now);
+
+    @Query("SELECT CASE WHEN COUNT(uv) > 0 THEN true ELSE false END " +
+            "FROM UserVisit uv " +
+            "WHERE uv.visit.id = :visitId " +
+            "AND uv.user.id = :userId " +
+            "AND uv.volunteerFeedback IS NOT NULL " +
+            "AND uv.volunteerFeedback <> ''")
+    boolean existsWithFeedback(@Param("visitId") UUID visitId, @Param("userId") UUID userId);
+
 }

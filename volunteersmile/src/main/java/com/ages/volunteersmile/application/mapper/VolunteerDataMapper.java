@@ -1,16 +1,13 @@
 package com.ages.volunteersmile.application.mapper;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
 
-import com.ages.volunteersmile.application.dto.VolunteerDTO;
-import com.ages.volunteersmile.application.dto.VolunteerProfileDTO;
-import com.ages.volunteersmile.application.dto.VisitDTO;
-import com.ages.volunteersmile.application.dto.UpdateVolunteerDTO;
-import com.ages.volunteersmile.application.dto.RoomAccessLevelDTO;
+import com.ages.volunteersmile.application.dto.*;
 import com.ages.volunteersmile.domain.global.model.Visit;
 import org.springframework.stereotype.Component;
 
@@ -50,12 +47,10 @@ public class VolunteerDataMapper {
         return volunteer;
     }
 
-    public VolunteerProfileDTO mapToVolunteerProfileDTO(Volunteer volunteer, List<Visit> visits) {
+    public VolunteerProfileDTO mapToVolunteerProfileDTO(Volunteer volunteer, List<Visit> visits,List<Boolean> hasFeedback) {
 
         VolunteerProfileDTO volunteerProfileDTO = new VolunteerProfileDTO();
-        List<VisitDTO> visitDto = visits.stream()
-                .map(visit -> VisitDataMapper.toDtoWithVolunteer(visit, volunteer))
-                .toList();
+        List<VisitWithHasFeedbackDTO> visitDto = VisitDataMapper.toListOfvisitWithHasFeedbackDTOList(visits,hasFeedback,volunteer);
 
         volunteerProfileDTO.setVolunteer(mapFrom(volunteer));
         volunteerProfileDTO.setVisits(visitDto);
