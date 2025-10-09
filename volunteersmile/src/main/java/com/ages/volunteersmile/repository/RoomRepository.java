@@ -35,13 +35,5 @@ public interface RoomRepository extends JpaRepository<Room, UUID>, JpaSpecificat
                                     @Param("activeStatus") RoomStatus activeStatus,
                                     @Param("scheduledStatus") Visit.VisitStatus scheduledStatus);
 
-
-    @Query("SELECT r FROM Room r " +
-            "ORDER BY CASE r.priority " +
-            "WHEN 'LOW' THEN 1 " +
-            "WHEN 'MEDIUM' THEN 2 " +
-            "WHEN 'HIGH' THEN 3 END ASC")
-    Page<Room> findAllOrderByPriority(Pageable pageable);
-
 }
 
