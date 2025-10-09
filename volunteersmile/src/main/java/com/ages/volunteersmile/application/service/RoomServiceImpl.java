@@ -169,7 +169,7 @@ public class RoomServiceImpl implements RoomService {
                 predicates.add(cb.equal(root.get("priority"), priority));
 
 
-            if ("priority".equalsIgnoreCase(sortBy)) {
+            if ("priority".equalsIgnoreCase(sortBy) && query != null) {
                 var caseExpr = cb.selectCase(root.get("priority"))
                         .when(RoomPriority.HIGH, 1)
                         .when(RoomPriority.MEDIUM, 2)
@@ -177,7 +177,6 @@ public class RoomServiceImpl implements RoomService {
                         .otherwise(4);
 
                 query.orderBy(direction.equalsIgnoreCase("desc") ? cb.desc(caseExpr) : cb.asc(caseExpr));
-
             }
 
             return cb.and(predicates.toArray(new Predicate[0]));

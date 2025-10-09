@@ -6,6 +6,7 @@ import java.util.UUID;
 
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,6 +21,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
+import org.springframework.web.server.ResponseStatusException;
 
 @RestController
 @RequestMapping("/rooms")
@@ -87,10 +89,9 @@ public class RoomController {
             summary = "Listar rooms com paginação, ordenação e filtros opcionais",
             description = "Retorna uma página de rooms, permitindo filtrar por andar e prioridade, e ordenar por qualquer campo",
             responses = {
-                    @ApiResponse(
-                            responseCode = "200",
-                            description = "Página de rooms retornada com sucesso"
-                    )
+                    @ApiResponse(responseCode = "200",  description = "Página de rooms retornada com sucesso"),
+                    @ApiResponse(responseCode = "4200", description = "Parâmetros de paginação inválidos")
+
             }
     )
     @GetMapping("/list")
@@ -102,6 +103,10 @@ public class RoomController {
             @RequestParam(required = false) Integer floor,
             @RequestParam(required = false) String priority
     ) {
+        if (page < 0 || size <= 0) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Parâmetros de paginação inválidos");
+        }
+
         return roomService.listPage(page, size, sortBy,direction,floor, priority);
     }
 }
