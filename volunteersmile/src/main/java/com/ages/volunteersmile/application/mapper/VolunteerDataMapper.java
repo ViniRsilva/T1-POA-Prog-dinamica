@@ -1,7 +1,6 @@
 package com.ages.volunteersmile.application.mapper;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -50,7 +49,7 @@ public class VolunteerDataMapper {
     public VolunteerProfileDTO mapToVolunteerProfileDTO(Volunteer volunteer, List<Visit> visits,List<Boolean> hasFeedback) {
 
         VolunteerProfileDTO volunteerProfileDTO = new VolunteerProfileDTO();
-        List<VisitWithHasFeedbackDTO> visitDto = VisitDataMapper.toListOfvisitWithHasFeedbackDTOList(visits,hasFeedback,volunteer);
+        List<VisitWithHasFeedbackDTO> visitDto = VisitDataMapper.toListOfVisitWithHasFeedbackDTOList(visits,hasFeedback,volunteer);
 
         volunteerProfileDTO.setVolunteer(mapFrom(volunteer));
         volunteerProfileDTO.setVisits(visitDto);

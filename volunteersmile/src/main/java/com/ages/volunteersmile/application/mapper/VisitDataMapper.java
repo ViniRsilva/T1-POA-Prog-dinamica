@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+
 import com.ages.volunteersmile.application.dto.CreateVisitDTO;
 import com.ages.volunteersmile.application.dto.VisitDTO;
 import com.ages.volunteersmile.application.dto.VisitWithHasFeedbackDTO;
@@ -12,7 +13,7 @@ import com.ages.volunteersmile.domain.global.model.Room;
 import com.ages.volunteersmile.domain.global.model.User;
 import com.ages.volunteersmile.domain.global.model.Visit;
 import com.ages.volunteersmile.domain.volunteer.model.Volunteer;
-import org.springframework.data.util.StreamUtils;
+
 
 public final class VisitDataMapper {
 
@@ -82,18 +83,13 @@ public final class VisitDataMapper {
         return dto;
     }
 
-    public  static  List<VisitWithHasFeedbackDTO> toListOfvisitWithHasFeedbackDTOList(List<Visit> visits,List<Boolean> has,Volunteer volunteer) {
+    public static List<VisitWithHasFeedbackDTO> toListOfVisitWithHasFeedbackDTOList(
+            List<Visit> visits,
+            List<Boolean> has,
+            Volunteer volunteer) {
 
-        List<VisitWithHasFeedbackDTO> dtos = new ArrayList<>();
-
-
-        for(int i = 0; i < has.size(); i++) {
-
-            dtos.add(toDtoWithHasFeedback(visits.get(i), has.get(i),volunteer));
-
-        }
-
-        return dtos;
-
+        return IntStream.range(0, has.size())
+                .mapToObj(i -> toDtoWithHasFeedback(visits.get(i), has.get(i), volunteer))
+                .collect(Collectors.toList());
     }
 }
