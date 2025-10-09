@@ -8,6 +8,6 @@ import java.util.List;
 @Setter
 public class VolunteerProfileDTO {
     private VolunteerDTO volunteer;
-    private List<VisitDTO> visits;
+    private List<VisitWithHasFeedbackDTO> visits;
 
 }
