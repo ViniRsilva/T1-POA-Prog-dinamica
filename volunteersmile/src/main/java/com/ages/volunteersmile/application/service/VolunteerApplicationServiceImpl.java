@@ -73,8 +73,8 @@ public class VolunteerApplicationServiceImpl implements VolunteerApplicationServ
     }
 
     @Override
-    public Page<VolunteerDTO> findAllPaginated(int pageNum, int pageSize){
-        Pageable pageable = PageRequest.of(pageNum, pageSize);
+    public Page<VolunteerDTO> findAllPaginated(int pageNumber, int pageSize){
+        Pageable pageable = PageRequest.of(pageNumber, pageSize);
         return volunteerDataMapper.mapFrom(repository.findAll(pageable)) ;
     }
 

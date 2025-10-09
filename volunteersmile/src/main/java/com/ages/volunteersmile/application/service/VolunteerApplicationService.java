@@ -14,7 +14,7 @@ public interface VolunteerApplicationService {
     VolunteerDTO findByEmail(String email);
     VolunteerDTO findById(UUID id);
     List<VolunteerDTO> findAll();
-    Page<VolunteerDTO> findAllPaginated(int pageNum, int size);
+    Page<VolunteerDTO> findAllPaginated(int pageNumber, int size);
     VolunteerDTO updateVolunteer(UUID id, UpdateVolunteerDTO dto);
     void deleteVolunteerById(UUID id);
     void updatePassword(UUID volunteerId, UpdatePasswordDTO dto);

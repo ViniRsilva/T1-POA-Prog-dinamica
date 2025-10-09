@@ -81,10 +81,10 @@ public class VolunteerController {
     @GetMapping("/paginated")
     public ResponseEntity<Page<VolunteerDTO>> getAllVolunteersPaginated(
             @Parameter(description = "Número da página (começa em 0)", schema = @Schema(type = "integer", defaultValue = "0", minimum = "0"))
-            @RequestParam(defaultValue = "0") int pageNum,
+            @RequestParam(defaultValue = "0") int pageNumber,
             @Parameter(description = "Quantidade de itens por página", schema = @Schema(type = "integer", defaultValue = "10", minimum = "1", maximum = "100"))
             @RequestParam(defaultValue = "10") int pageSize) {
-        Page<VolunteerDTO> volunteers = volunteerService.findAllPaginated(pageNum, pageSize);
+        Page<VolunteerDTO> volunteers = volunteerService.findAllPaginated(pageNumber, pageSize);
         return ResponseEntity.ok(volunteers);
     }
 
