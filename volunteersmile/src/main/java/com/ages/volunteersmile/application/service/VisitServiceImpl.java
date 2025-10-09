@@ -171,8 +171,10 @@ public class VisitServiceImpl implements VisitService {
 
     @Override
     public FeedbackDTO addVolunteerFeedback(UserVisitFeedbackDTO dto) {
-        UserVisit userVisit = userVisitRepository.findById(dto.getUserVisitId())
-            .orElseThrow(() -> exceptions.notFound("UserVisit não encontrado"));
+        UUID userId = dto.getUserId();
+        UserVisit userVisit = userVisitRepository.findTopByUser_IdAndVolunteerFeedbackIsNullOrderByVisit_StartDateDesc(userId)
+                .orElseThrow(() -> exceptions.notFound("UserVisit não encontrado para o usuário"));
+
         userVisit.setVolunteerFeedback(dto.getFeedback());
         userVisitRepository.save(userVisit);
         return VisitDataMapper.toFeedbackDto(userVisit);

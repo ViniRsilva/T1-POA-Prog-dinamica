@@ -8,7 +8,6 @@ import java.util.UUID;
 @Getter
 @Setter
 public class UserVisitFeedbackDTO {
-    private UUID userVisitId;
+    private UUID userId;
     private String feedback;
 }
-
