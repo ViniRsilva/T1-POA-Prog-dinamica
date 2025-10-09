@@ -95,7 +95,7 @@ public class RoomController {
             description = "Retorna uma página de rooms, permitindo filtrar por andar e prioridade, e ordenar por qualquer campo",
             responses = {
                     @ApiResponse(responseCode = "200",  description = "Página de rooms retornada com sucesso"),
-                    @ApiResponse(responseCode = "4200", description = "Parâmetros de paginação inválidos")
+                    @ApiResponse(responseCode = "402", description = "Parâmetros de paginação inválidos")
 
             }
     )
