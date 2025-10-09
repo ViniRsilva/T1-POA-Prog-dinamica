@@ -15,6 +15,7 @@ import com.ages.volunteersmile.domain.volunteer.model.Volunteer;
 import com.ages.volunteersmile.repository.UserRepository;
 import com.ages.volunteersmile.repository.UserVisitRepository;
 import com.ages.volunteersmile.repository.VolunteerRepository;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -84,18 +85,18 @@ public class VolunteerApplicationServiceImpl implements VolunteerApplicationServ
 
         if (authentication == null || !authentication.isAuthenticated()
                 || authentication instanceof AnonymousAuthenticationToken) {
-            throw new RuntimeException("Usuário não autenticado");
+            throw new AccessDeniedException("Usuário não autenticado");
         }
 
         String loggedEmail = authentication.getName();
 
         User logged = userRepository.findByEmail(loggedEmail)
-                .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+                .orElseThrow(() -> new AccessDeniedException("Usuário não encontrado"));
 
         boolean isAdmin = logged.getAppRole()== UserRole.ADMIN;
 
         if (!isAdmin && !logged.getId().equals(id)) {
-            throw new RuntimeException("Acesso negado");
+            throw new AccessDeniedException("Acesso negado");
         }
 
         Volunteer volunteer = repository.findById(id).orElseThrow(() -> exceptions.notFound("Voluntário não encontrado"));
