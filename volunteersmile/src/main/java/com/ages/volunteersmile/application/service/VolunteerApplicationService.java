@@ -3,7 +3,11 @@ package com.ages.volunteersmile.application.service;
 import java.util.List;
 import java.util.UUID;
 
-import com.ages.volunteersmile.application.dto.*;
+import com.ages.volunteersmile.application.dto.CreateVolunteerDTO;
+import com.ages.volunteersmile.application.dto.UpdatePasswordDTO;
+import com.ages.volunteersmile.application.dto.UpdateVolunteerDTO;
+import com.ages.volunteersmile.application.dto.VolunteerDTO;
+import com.ages.volunteersmile.application.dto.VolunteerProfileDTO;
 
 public interface VolunteerApplicationService {
     VolunteerDTO createVolunteer(CreateVolunteerDTO body);
