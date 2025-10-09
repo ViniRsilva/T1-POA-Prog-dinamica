@@ -8,12 +8,9 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-import com.ages.volunteersmile.application.dto.VisitMonthDTO;
-import com.ages.volunteersmile.application.dto.VisitTimeDTO;
+import com.ages.volunteersmile.application.dto.*;
 import org.springframework.stereotype.Service;
 
-import com.ages.volunteersmile.application.dto.CreateVisitDTO;
-import com.ages.volunteersmile.application.dto.VisitDTO;
 import com.ages.volunteersmile.application.mapper.VisitDataMapper;
 import com.ages.volunteersmile.domain.adapters.ExceptionsAdapter;
 import com.ages.volunteersmile.domain.global.model.Room;
@@ -170,6 +167,34 @@ public class VisitServiceImpl implements VisitService {
         visitRepository.save(visit);
 
         return VisitDataMapper.toDto(visit);
+    }
+
+    @Override
+    public FeedbackDTO addVolunteerFeedback(UserVisitFeedbackDTO dto) {
+        UUID userId = dto.getUserId();
+        UserVisit userVisit = userVisitRepository.findTopByUser_IdAndVolunteerFeedbackIsNullOrderByVisit_StartDateDesc(userId)
+                .orElseThrow(() -> exceptions.notFound("UserVisit não encontrado para o usuário"));
+
+        userVisit.setVolunteerFeedback(dto.getFeedback());
+        userVisitRepository.save(userVisit);
+        return VisitDataMapper.toFeedbackDto(userVisit);
+    }
+
+    @Override
+    public FeedbackDTO getLastVolunteerFeedback(UUID roomId) {
+        UserVisit userVisit = userVisitRepository.findTopByVisit_Room_IdAndVolunteerFeedbackIsNotNullOrderByVisit_StartDateDesc(roomId);
+        if (userVisit == null) {
+            return null;
+        }
+        return VisitDataMapper.toFeedbackDto(userVisit);
+    }
+
+    @Override
+    public List<FeedbackDTO> getAllFeedbacksByRoom(UUID roomId) {
+        List<UserVisit> userVisits = userVisitRepository.findAllByVisit_Room_IdAndVolunteerFeedbackIsNotNull(roomId);
+        return userVisits.stream()
+                .map(VisitDataMapper::toFeedbackDto)
+                .toList();
     }
 
 }

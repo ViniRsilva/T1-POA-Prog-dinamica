@@ -6,10 +6,12 @@ import java.util.stream.IntStream;
 
 
 import com.ages.volunteersmile.application.dto.CreateVisitDTO;
+import com.ages.volunteersmile.application.dto.FeedbackDTO;
 import com.ages.volunteersmile.application.dto.VisitDTO;
 import com.ages.volunteersmile.application.dto.VisitWithHasFeedbackDTO;
 import com.ages.volunteersmile.domain.global.model.Room;
 import com.ages.volunteersmile.domain.global.model.User;
+import com.ages.volunteersmile.domain.global.model.UserVisit;
 import com.ages.volunteersmile.domain.global.model.Visit;
 import com.ages.volunteersmile.domain.volunteer.model.Volunteer;
 
@@ -64,6 +66,7 @@ public final class VisitDataMapper {
         return visits.stream().map(VisitDataMapper::toDto).collect(Collectors.toList());
     }
 
+
     public static VisitWithHasFeedbackDTO  toDtoWithHasFeedback(Visit v, boolean hasFeedback, Volunteer volunteer) {
 
         VisitWithHasFeedbackDTO dto = new VisitWithHasFeedbackDTO();
@@ -91,4 +94,16 @@ public final class VisitDataMapper {
                 .mapToObj(i -> toDtoWithHasFeedback(visits.get(i), has.get(i), volunteer))
                 .collect(Collectors.toList());
     }
+
+    public static FeedbackDTO toFeedbackDto(UserVisit userVisit) {
+        FeedbackDTO dto = new FeedbackDTO();
+        dto.setId(userVisit.getId().toString());
+        dto.setUserName(userVisit.getUser().getName());
+        dto.setDate(userVisit.getVisit().getStartDate() != null ? userVisit.getVisit().getStartDate().toString() : null);
+        dto.setFeedback(userVisit.getVolunteerFeedback());
+        dto.setFloor(userVisit.getVisit().getRoom().getFloor());
+        dto.setRoomNumber(userVisit.getVisit().getRoom().getNumber());
+        return dto;
+    }
+
 }
