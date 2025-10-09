@@ -4,13 +4,20 @@ import java.net.URI;
 import java.util.List;
 import java.util.UUID;
 
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestParam;
 import com.ages.volunteersmile.application.dto.CreateRoomDTO;
 import com.ages.volunteersmile.application.dto.RoomDTO;
 import com.ages.volunteersmile.application.dto.UpdateRoomDTO;
@@ -29,11 +36,9 @@ import org.springframework.web.server.ResponseStatusException;
 public class RoomController {
 
     private final RoomService service;
-    private final RoomService roomService;
 
-    public RoomController(RoomService service, RoomService roomService) {
+    public RoomController(RoomService service) {
         this.service = service;
-        this.roomService = roomService;
     }
 
     @Operation(summary = "Cria um novo quarto")
@@ -95,7 +100,7 @@ public class RoomController {
             }
     )
     @GetMapping("/list")
-    public Page<RoomDTO> listarRooms(
+    public ResponseEntity<Page<RoomDTO>> listarRooms(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
             @RequestParam(defaultValue = "id") String sortBy,
@@ -107,6 +112,6 @@ public class RoomController {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Parâmetros de paginação inválidos");
         }
 
-        return roomService.listPage(page, size, sortBy,direction,floor, priority);
+        return ResponseEntity.ok(service.listPage(page, size, sortBy,direction,floor, priority));
     }
 }
