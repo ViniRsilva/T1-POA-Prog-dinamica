@@ -12,28 +12,51 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ages.volunteersmile.application.dto.CreateVolunteerDTO;
-import com.ages.volunteersmile.application.dto.UpdatePasswordDTO;
 import com.ages.volunteersmile.application.dto.UpdateVolunteerDTO;
 import com.ages.volunteersmile.application.dto.VolunteerDTO;
+import com.ages.volunteersmile.application.dto.VolunteerProfileDTO;
+import com.ages.volunteersmile.application.dto.UpdatePasswordDTO;
 import com.ages.volunteersmile.application.mapper.VolunteerDataMapper;
 import com.ages.volunteersmile.domain.adapters.ExceptionsAdapter;
+import com.ages.volunteersmile.domain.global.model.User;
+import com.ages.volunteersmile.domain.global.model.UserRole;
+import com.ages.volunteersmile.domain.global.model.UserVisit;
+import com.ages.volunteersmile.domain.global.model.Visit;
 import com.ages.volunteersmile.domain.volunteer.model.Volunteer;
+import com.ages.volunteersmile.repository.UserRepository;
+import com.ages.volunteersmile.repository.UserVisitRepository;
 import com.ages.volunteersmile.repository.VolunteerRepository;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional(readOnly = true)
 public class VolunteerApplicationServiceImpl implements VolunteerApplicationService {
 
     private final VolunteerRepository repository;
+    private final UserVisitRepository userVisitRepository;
+    private final UserRepository userRepository;
     private final BCryptPasswordEncoder passwordEncoder;
     private final ExceptionsAdapter exceptions;
     private final VolunteerDataMapper volunteerDataMapper;
 
-    public VolunteerApplicationServiceImpl(VolunteerRepository repository,
+    public VolunteerApplicationServiceImpl(VolunteerRepository repository, UserVisitRepository userVisitRepository, UserRepository userRepository,
                                            BCryptPasswordEncoder passwordEncoder,
                                            ExceptionsAdapter exceptions,
                                            VolunteerDataMapper volunteerDataMapper) {
         this.repository = repository;
+        this.userVisitRepository = userVisitRepository;
+        this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.exceptions = exceptions;
         this.volunteerDataMapper = volunteerDataMapper;
@@ -65,6 +88,43 @@ public class VolunteerApplicationServiceImpl implements VolunteerApplicationServ
     Volunteer volunteer = repository.findById(id)
                 .orElseThrow(() -> exceptions.notFound("Voluntário não encontrado"));
         return volunteerDataMapper.mapFrom(volunteer);
+    }
+
+    @Override
+    public VolunteerProfileDTO getProfilebyID(UUID id) {
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        if (authentication == null || !authentication.isAuthenticated()
+                || authentication instanceof AnonymousAuthenticationToken) {
+            throw new AccessDeniedException("Usuário não autenticado");
+        }
+
+        String loggedEmail = authentication.getName();
+
+        User logged = userRepository.findByEmail(loggedEmail)
+                .orElseThrow(() -> new AccessDeniedException("Usuário não encontrado"));
+
+        boolean isAdmin = logged.getAppRole()== UserRole.ADMIN;
+
+        if (!isAdmin && !logged.getId().equals(id)) {
+            throw new AccessDeniedException("Acesso negado");
+        }
+
+        Volunteer volunteer = repository.findById(id).orElseThrow(() -> exceptions.notFound("Voluntário não encontrado"));
+
+        List<Visit> visits = userVisitRepository.findByUserId(volunteer.getId())
+                .stream()
+                .map(UserVisit::getVisit)
+                .toList();
+
+        List<Boolean> hasFeedback = visits.stream()
+                .map(visit -> userVisitRepository.existsWithFeedback(visit.getId(), volunteer.getId()))
+                .collect(Collectors.toList());
+
+
+        return volunteerDataMapper.mapToVolunteerProfileDTO(volunteer, visits, hasFeedback);
+
     }
 
     @Override

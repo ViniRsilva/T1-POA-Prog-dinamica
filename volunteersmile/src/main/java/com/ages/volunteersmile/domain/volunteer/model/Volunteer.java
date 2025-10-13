@@ -18,4 +18,7 @@ public class Volunteer extends User {
 
     @Column(name = "description_voluntary", columnDefinition = "TEXT")
     private String descriptionVoluntary;
+
+    @Column(name = "total_time")
+    private Integer totaltime;
 }

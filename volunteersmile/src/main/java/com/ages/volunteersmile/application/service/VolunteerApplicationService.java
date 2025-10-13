@@ -8,11 +8,13 @@ import com.ages.volunteersmile.application.dto.UpdatePasswordDTO;
 import com.ages.volunteersmile.application.dto.UpdateVolunteerDTO;
 import com.ages.volunteersmile.application.dto.VolunteerDTO;
 import org.springframework.data.domain.Page;
+import com.ages.volunteersmile.application.dto.VolunteerProfileDTO;
 
 public interface VolunteerApplicationService {
     VolunteerDTO createVolunteer(CreateVolunteerDTO body);
     VolunteerDTO findByEmail(String email);
     VolunteerDTO findById(UUID id);
+    VolunteerProfileDTO getProfilebyID(UUID id);
     List<VolunteerDTO> findAll();
     Page<VolunteerDTO> findAllPaginated(int pageNumber, int size);
     VolunteerDTO updateVolunteer(UUID id, UpdateVolunteerDTO dto);

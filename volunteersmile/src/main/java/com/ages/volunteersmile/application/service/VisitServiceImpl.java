@@ -6,8 +6,10 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
+import com.ages.volunteersmile.domain.volunteer.model.Volunteer;
 import com.ages.volunteersmile.application.dto.*;
 import org.springframework.stereotype.Service;
 
@@ -29,7 +31,7 @@ public class VisitServiceImpl implements VisitService {
 
     private final VisitRepository visitRepository;
     private final RoomRepository roomRepository;
-        private final VolunteerRepository volunteerRepository;
+    private final VolunteerRepository volunteerRepository;
     private final UserVisitRepository userVisitRepository;
     private final ExceptionsAdapter exceptions;
 
@@ -142,7 +144,18 @@ public class VisitServiceImpl implements VisitService {
     @Override
     @Transactional
     public VisitTimeDTO endVisitById(UUID visitId) {
+
         Visit visit = visitRepository.findVisitById(visitId);
+        if(visit.getEndDate() != null){
+
+            throw exceptions.conflict("visita ja finalizada");
+
+        }
+        List<UUID> uv = userVisitRepository.findAllUserIdsByVisitId(visitId);
+        List<Volunteer> volunteer = uv.stream()
+                .map(volunteerRepository::findById)
+                .flatMap(Optional::stream)
+                .toList();
 
         LocalDateTime endTime = LocalDateTime.now();
         visit.setEndDate(endTime);
@@ -150,6 +163,8 @@ public class VisitServiceImpl implements VisitService {
         Integer durationMinutes = java.time.Duration.between(visit.getStartDate(), endTime).toMinutesPart();
         visit.setDurationMinutes(durationMinutes);
 
+        volunteer.forEach(v -> v.setTotaltime(v.getTotaltime() + durationMinutes));
+        volunteerRepository.saveAll(volunteer);
         visitRepository.save(visit);
 
         String formatted = String.format("%dh %02dmin", durationMinutes / 60, durationMinutes % 60);
@@ -171,8 +186,10 @@ public class VisitServiceImpl implements VisitService {
 
     @Override
     public FeedbackDTO addVolunteerFeedback(UserVisitFeedbackDTO dto) {
-        UserVisit userVisit = userVisitRepository.findById(dto.getUserVisitId())
-            .orElseThrow(() -> exceptions.notFound("UserVisit não encontrado"));
+        UUID userId = dto.getUserId();
+        UserVisit userVisit = userVisitRepository.findTopByUser_IdAndVolunteerFeedbackIsNullOrderByVisit_StartDateDesc(userId)
+                .orElseThrow(() -> exceptions.notFound("UserVisit não encontrado para o usuário"));
+
         userVisit.setVolunteerFeedback(dto.getFeedback());
         userVisitRepository.save(userVisit);
         return VisitDataMapper.toFeedbackDto(userVisit);
