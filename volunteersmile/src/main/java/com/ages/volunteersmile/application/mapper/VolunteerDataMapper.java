@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+import org.springframework.data.domain.Page;
 
 import com.ages.volunteersmile.application.dto.VolunteerDTO;
 import com.ages.volunteersmile.application.dto.VisitWithHasFeedbackDTO;
@@ -12,6 +13,7 @@ import com.ages.volunteersmile.application.dto.VolunteerProfileDTO;
 import com.ages.volunteersmile.application.dto.UpdateVolunteerDTO;
 import com.ages.volunteersmile.application.dto.RoomAccessLevelDTO;
 import com.ages.volunteersmile.domain.global.model.Visit;
+
 import org.springframework.stereotype.Component;
 
 import com.ages.volunteersmile.application.Enum.UserStatus;
@@ -102,5 +104,9 @@ public class VolunteerDataMapper {
         if (newValue != null && !Objects.equals(newValue, currentValue)) {
             setter.accept(newValue);
         }
+    }
+
+    public Page<VolunteerDTO> mapFrom(Page<Volunteer> all) {
+        return all.map(this::mapFrom);
     }
 }

@@ -7,6 +7,7 @@ import com.ages.volunteersmile.application.dto.CreateVolunteerDTO;
 import com.ages.volunteersmile.application.dto.UpdatePasswordDTO;
 import com.ages.volunteersmile.application.dto.UpdateVolunteerDTO;
 import com.ages.volunteersmile.application.dto.VolunteerDTO;
+import org.springframework.data.domain.Page;
 import com.ages.volunteersmile.application.dto.VolunteerProfileDTO;
 
 public interface VolunteerApplicationService {
@@ -15,6 +16,7 @@ public interface VolunteerApplicationService {
     VolunteerDTO findById(UUID id);
     VolunteerProfileDTO getProfilebyID(UUID id);
     List<VolunteerDTO> findAll();
+    Page<VolunteerDTO> findAllPaginated(int pageNumber, int size);
     VolunteerDTO updateVolunteer(UUID id, UpdateVolunteerDTO dto);
     void deleteVolunteerById(UUID id);
     void updatePassword(UUID volunteerId, UpdatePasswordDTO dto);
