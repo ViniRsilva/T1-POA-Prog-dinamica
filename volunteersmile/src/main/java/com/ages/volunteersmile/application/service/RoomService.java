@@ -7,6 +7,7 @@ import java.util.UUID;
 import com.ages.volunteersmile.application.dto.CreateRoomDTO;
 import com.ages.volunteersmile.application.dto.RoomAvailableDTO;
 import com.ages.volunteersmile.application.dto.RoomDTO;
+import org.springframework.data.domain.Page;
 
 public interface RoomService {
 
@@ -21,4 +22,6 @@ public interface RoomService {
     void deleteRoom(UUID id);
 
     List<RoomAvailableDTO> listAvailableByDate(LocalDate date);
+
+    Page<RoomDTO> listPage(int page, int size, String sortBy, String direction, Integer floor, String priority);
 }

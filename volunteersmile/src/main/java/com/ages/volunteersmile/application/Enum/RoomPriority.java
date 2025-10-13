@@ -4,4 +4,5 @@ public enum RoomPriority {
     LOW,
     MEDIUM,
     HIGH
+
 }

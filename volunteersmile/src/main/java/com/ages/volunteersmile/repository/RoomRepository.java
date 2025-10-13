@@ -5,7 +5,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -15,7 +17,7 @@ import com.ages.volunteersmile.domain.global.model.Room;
 import com.ages.volunteersmile.domain.global.model.Visit;
 
 @Repository
-public interface RoomRepository extends JpaRepository<Room, UUID> {
+public interface RoomRepository extends JpaRepository<Room, UUID>, JpaSpecificationExecutor<Room>  {
     Optional<Room> findByNumber(Integer number);
     boolean existsByNumber(Integer number);
 
@@ -30,5 +32,6 @@ public interface RoomRepository extends JpaRepository<Room, UUID> {
             List<Room> findAvailableByDate(@Param("date") LocalDate date,
                                     @Param("activeStatus") RoomStatus activeStatus,
                                     @Param("scheduledStatus") Visit.VisitStatus scheduledStatus);
+
 }
 
