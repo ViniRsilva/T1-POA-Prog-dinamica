@@ -7,11 +7,13 @@ import com.ages.volunteersmile.application.dto.CreateVolunteerDTO;
 import com.ages.volunteersmile.application.dto.UpdatePasswordDTO;
 import com.ages.volunteersmile.application.dto.UpdateVolunteerDTO;
 import com.ages.volunteersmile.application.dto.VolunteerDTO;
+import com.ages.volunteersmile.application.dto.VolunteerProfileDTO;
 
 public interface VolunteerApplicationService {
     VolunteerDTO createVolunteer(CreateVolunteerDTO body);
     VolunteerDTO findByEmail(String email);
     VolunteerDTO findById(UUID id);
+    VolunteerProfileDTO getProfilebyID(UUID id);
     List<VolunteerDTO> findAll();
     VolunteerDTO updateVolunteer(UUID id, UpdateVolunteerDTO dto);
     void deleteVolunteerById(UUID id);

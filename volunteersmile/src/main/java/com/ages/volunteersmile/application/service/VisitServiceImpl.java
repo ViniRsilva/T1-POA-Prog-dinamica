@@ -29,7 +29,7 @@ public class VisitServiceImpl implements VisitService {
 
     private final VisitRepository visitRepository;
     private final RoomRepository roomRepository;
-        private final VolunteerRepository volunteerRepository;
+    private final VolunteerRepository volunteerRepository;
     private final UserVisitRepository userVisitRepository;
     private final ExceptionsAdapter exceptions;
 

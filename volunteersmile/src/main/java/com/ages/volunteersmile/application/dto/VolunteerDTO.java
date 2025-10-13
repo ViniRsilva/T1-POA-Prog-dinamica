@@ -11,6 +11,9 @@ import lombok.Setter;
 @Getter
 @Setter
 public class VolunteerDTO extends UserDTO {
+
+    private String email;
+    private String name;
     private String phoneNumber;
     private String description;
     private UserStatus status;

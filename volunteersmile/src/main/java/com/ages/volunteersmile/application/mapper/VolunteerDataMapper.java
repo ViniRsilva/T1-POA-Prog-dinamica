@@ -5,12 +5,16 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+
+import com.ages.volunteersmile.application.dto.VolunteerDTO;
+import com.ages.volunteersmile.application.dto.VisitWithHasFeedbackDTO;
+import com.ages.volunteersmile.application.dto.VolunteerProfileDTO;
+import com.ages.volunteersmile.application.dto.UpdateVolunteerDTO;
+import com.ages.volunteersmile.application.dto.RoomAccessLevelDTO;
+import com.ages.volunteersmile.domain.global.model.Visit;
 import org.springframework.stereotype.Component;
 
 import com.ages.volunteersmile.application.Enum.UserStatus;
-import com.ages.volunteersmile.application.dto.RoomAccessLevelDTO;
-import com.ages.volunteersmile.application.dto.UpdateVolunteerDTO;
-import com.ages.volunteersmile.application.dto.VolunteerDTO;
 import com.ages.volunteersmile.domain.volunteer.model.Volunteer;
 
 @Component
@@ -28,7 +32,7 @@ public class VolunteerDataMapper {
         dto.setDescription(volunteer.getDescriptionVoluntary());
         mapStatusToDto(volunteer, dto);
         mapRoomAccessToDto(volunteer, dto);
-    dto.setRole(volunteer.getAppRole());
+        dto.setRole(volunteer.getAppRole());
         dto.setCreatedAt(volunteer.getCreatedAt());
         return dto;
     }
@@ -44,6 +48,18 @@ public class VolunteerDataMapper {
         volunteer.setDescriptionVoluntary(dto.getDescriptionVoluntary());
         volunteer.setCreatedAt(LocalDateTime.now());
         return volunteer;
+    }
+
+    public VolunteerProfileDTO mapToVolunteerProfileDTO(Volunteer volunteer, List<Visit> visits,List<Boolean> hasFeedback) {
+
+        VolunteerProfileDTO volunteerProfileDTO = new VolunteerProfileDTO();
+        List<VisitWithHasFeedbackDTO> visitDto = VisitDataMapper.toListOfVisitWithHasFeedbackDTOList(visits,hasFeedback,volunteer);
+
+        volunteerProfileDTO.setVolunteer(mapFrom(volunteer));
+        volunteerProfileDTO.setVisits(visitDto);
+
+        return volunteerProfileDTO;
+
     }
 
 
