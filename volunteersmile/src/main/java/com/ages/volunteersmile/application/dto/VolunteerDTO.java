@@ -19,4 +19,5 @@ public class VolunteerDTO extends UserDTO {
     private UserStatus status;
     private RoomAccessLevelDTO roomAccessLevel;
     private LocalDateTime createdAt;
+    private Integer totaltime;
 }

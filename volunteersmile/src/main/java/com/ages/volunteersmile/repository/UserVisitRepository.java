@@ -5,6 +5,7 @@ import java.util.UUID;
 import java.util.Optional;
 import java.time.LocalDateTime;
 
+import com.ages.volunteersmile.domain.volunteer.model.Volunteer;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -24,9 +25,13 @@ public interface UserVisitRepository extends JpaRepository<UserVisit, UUID> {
 
     boolean existsByUser_Id(UUID userId);
 
+    @Query("SELECT uv.user.id FROM UserVisit uv WHERE uv.visit.id = :visitId")
+    List<UUID> findAllUserIdsByVisitId(@Param("visitId") UUID visitId);
+
     UserVisit findTopByVisit_Room_IdAndVolunteerFeedbackIsNotNullOrderByVisit_StartDateDesc(UUID roomId);
 
     List<UserVisit> findAllByVisit_Room_IdAndVolunteerFeedbackIsNotNull(UUID roomId);
+
 
     Optional<UserVisit> findFirstByUser_IdAndVisit_StartDateAfterOrderByVisit_StartDateAsc(UUID userId, LocalDateTime now);
 

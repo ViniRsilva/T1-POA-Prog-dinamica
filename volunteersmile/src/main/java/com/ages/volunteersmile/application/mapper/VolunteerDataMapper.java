@@ -34,6 +34,7 @@ public class VolunteerDataMapper {
         mapRoomAccessToDto(volunteer, dto);
         dto.setRole(volunteer.getAppRole());
         dto.setCreatedAt(volunteer.getCreatedAt());
+        dto.setTotaltime(volunteer.getTotaltime());
         return dto;
     }
 
