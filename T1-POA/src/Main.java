@@ -23,6 +23,7 @@ public class Main {
 
         System.out.println("Método: Força Bruta");
         System.out.println("Resultado LCS: " + resultadoFB);
+        System.out.println("Quantidade de operações: " + lcsForcaBruta.getContadorOperacoesLcsForcaBruta());
         System.out.printf("Tempo de execução: %.4f ms%n", tempoFB);
         System.out.println("------------------------------------");
 
@@ -34,6 +35,7 @@ public class Main {
 
         System.out.println("Método: Programação Dinâmica (Memoização)");
         System.out.println("Resultado LCS: " + resultadoDP);
+        System.out.println("Quantidade de operações: " + lcsMemo.getContadorOperacoesLcsMemo());
         System.out.printf("Tempo de execução: %.4f ms%n", tempoDP);
         System.out.println("------------------------------------");
 

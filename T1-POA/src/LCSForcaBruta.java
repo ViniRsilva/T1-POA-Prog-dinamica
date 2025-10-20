@@ -1,6 +1,9 @@
 class LCSForcaBruta {
 
+    private int contadorOperacoesLcsForcaBruta = 0;
+
     int lcsRec(String s1, String s2, int m, int n) {
+        contadorOperacoesLcsForcaBruta++;
         if (m == 0 || n == 0)
             return 0;
 
@@ -11,8 +14,11 @@ class LCSForcaBruta {
                 lcsRec(s1, s2, m, n - 1));
     }
 
-
     int lcs(String s1, String s2) {
         return lcsRec(s1, s2, s1.length(), s2.length());
+    }
+
+    public int getContadorOperacoesLcsForcaBruta() {
+        return contadorOperacoesLcsForcaBruta;
     }
 }

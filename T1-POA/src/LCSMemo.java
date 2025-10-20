@@ -1,6 +1,7 @@
 import java.util.Arrays;
 
 class LCSMemo {
+    private int contadorOperacoesLcsMemo = 0;
 
     /**
      * Função auxiliar para cálculo do LCS
@@ -12,8 +13,8 @@ class LCSMemo {
      * @param memo matriz de memoização
      * @return tamanho da maior substring gerada por s1 e s2
      */
-    int lcsRec(String s1, String s2, int m, int n,
-               int[][] memo) {
+    int lcsRec(String s1, String s2, int m, int n, int[][] memo) {
+        contadorOperacoesLcsMemo++;
         // Caso base
         if (m == 0 || n == 0)
             return 0;
@@ -24,15 +25,13 @@ class LCSMemo {
 
         // Ultimo caractere das strings são iguais
         if (s1.charAt(m - 1) == s2.charAt(n - 1)) {
-            return memo[m][n]
-                    = 1 + lcsRec(s1, s2, m - 1, n - 1, memo);
+            return memo[m][n] = 1 + lcsRec(s1, s2, m - 1, n - 1, memo);
         }
 
         // Caracteres não são iguais -> chama lcsRec duas vezes,
         // eliminando o ultimo caractere
         // de cada uma das strings em cada chamada
-        return memo[m][n]
-                = Math.max(lcsRec(s1, s2, m, n - 1, memo),
+        return memo[m][n] = Math.max(lcsRec(s1, s2, m, n - 1, memo),
                 lcsRec(s1, s2, m - 1, n, memo));
     }
 
@@ -54,5 +53,9 @@ class LCSMemo {
         }
 
         return lcsRec(s1, s2, m, n, memo);
+    }
+
+    public int getContadorOperacoesLcsMemo() {
+        return contadorOperacoesLcsMemo;
     }
 }
